@@ -1,0 +1,725 @@
+// ============================================================================
+// ToolVerse — Enterprise Directory Database Schema
+// ============================================================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+}
+
+enum PricingModel {
+  FREE
+  FREEMIUM
+  PAID
+  SUBSCRIPTION
+  ONE_TIME
+  OPEN_SOURCE
+  CONTACT_SALES
+}
+
+enum ToolStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum RedirectType {
+  PERMANENT // 308 / 301
+  TEMPORARY // 307 / 302
+}
+
+enum MediaType {
+  IMAGE
+  LOGO
+  SCREENSHOT
+  OG_IMAGE
+  ICON
+  DOCUMENT
+}
+
+enum NewsletterStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
+  PENDING
+}
+
+// ============================================================================
+// ADMIN (single administrator role model, extensible to editors)
+// ============================================================================
+
+model Admin {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  passwordHash  String
+  role          AdminRole @default(SUPER_ADMIN)
+  avatarUrl     String?
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  twoFactorSecret String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      AdminSession[]
+  auditLogs     AuditLog[]
+  blogPosts     BlogPost[]
+
+  @@map("admins")
+}
+
+model AdminSession {
+  id            String   @id @default(cuid())
+  adminId       String
+  admin         Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  tokenHash     String   @unique
+  ipAddress     String?
+  userAgent     String?
+  expiresAt     DateTime
+  createdAt     DateTime @default(now())
+
+  @@index([adminId])
+  @@map("admin_sessions")
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  adminId     String
+  admin       Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  action      String   // e.g. "tool.create", "tool.update", "tool.delete"
+  entityType  String
+  entityId    String?
+  metadata    Json?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  @@index([adminId])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+// ============================================================================
+// TAXONOMY: Categories / Subcategories / Tags
+// ============================================================================
+
+model Category {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String        @unique
+  description   String?
+  icon          String?
+  imageUrl      String?
+  order         Int           @default(0)
+  isFeatured    Boolean       @default(false)
+  isActive      Boolean       @default(true)
+
+  seoId         String?       @unique
+  seo           SEO?          @relation(fields: [seoId], references: [id])
+
+  subcategories Subcategory[]
+  tools         Tool[]
+  blogPosts     BlogPost[]
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([isActive, order])
+  @@map("categories")
+}
+
+model Subcategory {
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  description   String?
+  order         Int       @default(0)
+  isActive      Boolean   @default(true)
+
+  categoryId    String
+  category      Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  tools         Tool[]
+
+  seoId         String?   @unique
+  seo           SEO?      @relation(fields: [seoId], references: [id])
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([categoryId])
+  @@index([slug])
+  @@map("subcategories")
+}
+
+model Tag {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+
+  tools       ToolTag[]
+  blogPosts   BlogPostTag[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@map("tags")
+}
+
+// ============================================================================
+// COMPANIES
+// ============================================================================
+
+model Company {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  description   String?  @db.Text
+  logoUrl       String?
+  websiteUrl    String?
+  foundedYear   Int?
+  country       String?
+  employeeRange String?  // e.g. "1-10", "11-50", "51-200"
+  fundingStage  String?
+
+  twitterUrl    String?
+  linkedinUrl   String?
+  githubUrl     String?
+  facebookUrl   String?
+  instagramUrl  String?
+  youtubeUrl    String?
+
+  isVerified    Boolean  @default(false)
+  isActive      Boolean  @default(true)
+
+  tools         Tool[]
+
+  seoId         String?  @unique
+  seo           SEO?     @relation(fields: [seoId], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([slug])
+  @@map("companies")
+}
+
+// ============================================================================
+// TOOLS (core entity)
+// ============================================================================
+
+model Tool {
+  id                String       @id @default(cuid())
+  name              String
+  slug              String       @unique
+  tagline           String?
+  description       String       @db.Text
+  longDescription   String?      @db.Text
+
+  logoUrl           String?
+  websiteUrl        String
+  affiliateUrl      String?
+
+  pricingModel      PricingModel @default(FREE)
+  startingPrice     Decimal?     @db.Decimal(10, 2)
+  currency          String?      @default("USD")
+
+  status            ToolStatus   @default(DRAFT)
+  isFeatured        Boolean      @default(false)
+  isVerified        Boolean      @default(false)
+
+  publishedAt       DateTime?
+
+  viewCount         Int          @default(0)
+  clickCount        Int          @default(0)
+  upvoteCount        Int          @default(0)
+
+  // Relations — taxonomy
+  categoryId        String
+  category          Category     @relation(fields: [categoryId], references: [id])
+  subcategoryId     String?
+  subcategory       Subcategory? @relation(fields: [subcategoryId], references: [id])
+
+  companyId         String?
+  company           Company?     @relation(fields: [companyId], references: [id])
+
+  tags              ToolTag[]
+  features          ToolFeature[]
+  pros              ToolPro[]
+  cons              ToolCon[]
+  screenshots       Screenshot[]
+  pricingPlans      PricingPlan[]
+  platforms         ToolPlatform[]
+  integrations      ToolIntegration[]
+  faqs              FAQ[]
+  collections       CollectionTool[]
+
+  // Alternatives (self-referencing many-to-many)
+  alternativesFrom  ToolAlternative[] @relation("ToolAlternativeSource")
+  alternativesTo    ToolAlternative[] @relation("ToolAlternativeTarget")
+
+  seoId             String?      @unique
+  seo               SEO?         @relation(fields: [seoId], references: [id])
+
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([slug])
+  @@index([status, isFeatured])
+  @@index([categoryId])
+  @@index([companyId])
+  @@map("tools")
+}
+
+model ToolTag {
+  toolId String
+  tool   Tool   @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  tagId  String
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([toolId, tagId])
+  @@index([tagId])
+  @@map("tool_tags")
+}
+
+model ToolFeature {
+  id      String @id @default(cuid())
+  toolId  String
+  tool    Tool   @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  title   String
+  description String?
+  icon    String?
+  order   Int    @default(0)
+
+  @@index([toolId])
+  @@map("tool_features")
+}
+
+model ToolPro {
+  id      String @id @default(cuid())
+  toolId  String
+  tool    Tool   @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  text    String
+  order   Int    @default(0)
+
+  @@index([toolId])
+  @@map("tool_pros")
+}
+
+model ToolCon {
+  id      String @id @default(cuid())
+  toolId  String
+  tool    Tool   @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  text    String
+  order   Int    @default(0)
+
+  @@index([toolId])
+  @@map("tool_cons")
+}
+
+model ToolAlternative {
+  toolId         String
+  tool           Tool   @relation("ToolAlternativeSource", fields: [toolId], references: [id], onDelete: Cascade)
+  alternativeId  String
+  alternative    Tool   @relation("ToolAlternativeTarget", fields: [alternativeId], references: [id], onDelete: Cascade)
+  order          Int    @default(0)
+
+  @@id([toolId, alternativeId])
+  @@index([alternativeId])
+  @@map("tool_alternatives")
+}
+
+model Screenshot {
+  id        String   @id @default(cuid())
+  toolId    String
+  tool      Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  url       String
+  altText   String?
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([toolId])
+  @@map("screenshots")
+}
+
+model PricingPlan {
+  id          String       @id @default(cuid())
+  toolId      String
+  tool        Tool         @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  name        String
+  price       Decimal?     @db.Decimal(10, 2)
+  billingCycle String?     // monthly, yearly, one-time
+  currency    String       @default("USD")
+  features    String[]
+  isPopular   Boolean      @default(false)
+  order       Int          @default(0)
+
+  @@index([toolId])
+  @@map("pricing_plans")
+}
+
+model Platform {
+  id      String @id @default(cuid())
+  name    String @unique // Web, iOS, Android, Windows, macOS, Linux, API
+  slug    String @unique
+  icon    String?
+
+  tools   ToolPlatform[]
+
+  @@map("platforms")
+}
+
+model ToolPlatform {
+  toolId     String
+  tool       Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  platformId String
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@id([toolId, platformId])
+  @@index([platformId])
+  @@map("tool_platforms")
+}
+
+model Integration {
+  id      String @id @default(cuid())
+  name    String @unique
+  slug    String @unique
+  logoUrl String?
+
+  tools   ToolIntegration[]
+
+  @@map("integrations")
+}
+
+model ToolIntegration {
+  toolId        String
+  tool          Tool        @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  integrationId String
+  integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+
+  @@id([toolId, integrationId])
+  @@index([integrationId])
+  @@map("tool_integrations")
+}
+
+// ============================================================================
+// COLLECTIONS (curated lists e.g. "Best Free AI Tools 2026")
+// ============================================================================
+
+model Collection {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?  @db.Text
+  coverImage  String?
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+
+  tools       CollectionTool[]
+
+  seoId       String?  @unique
+  seo         SEO?     @relation(fields: [seoId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@map("collections")
+}
+
+model CollectionTool {
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  toolId       String
+  tool         Tool       @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  order        Int        @default(0)
+  note         String?
+
+  @@id([collectionId, toolId])
+  @@index([toolId])
+  @@map("collection_tools")
+}
+
+// ============================================================================
+// BLOG
+// ============================================================================
+
+model BlogPost {
+  id              String     @id @default(cuid())
+  title           String
+  slug            String     @unique
+  excerpt         String?
+  content         String     @db.Text
+  featuredImage   String?
+
+  authorId        String
+  author          Admin      @relation(fields: [authorId], references: [id])
+
+  categoryId      String?
+  category        Category?  @relation(fields: [categoryId], references: [id])
+
+  tags            BlogPostTag[]
+  faqs            FAQ[]
+
+  status          BlogStatus @default(DRAFT)
+  readingTimeMins Int?
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+
+  viewCount       Int        @default(0)
+
+  seoId           String?    @unique
+  seo             SEO?       @relation(fields: [seoId], references: [id])
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([status, publishedAt])
+  @@index([categoryId])
+  @@map("blog_posts")
+}
+
+model BlogPostTag {
+  postId String
+  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tagId  String
+  tag    Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@index([tagId])
+  @@map("blog_post_tags")
+}
+
+// ============================================================================
+// STATIC PAGES (About, Contact, Privacy, Terms, Cookies, etc.)
+// ============================================================================
+
+model Page {
+  id        String     @id @default(cuid())
+  title     String
+  slug      String     @unique
+  content   String     @db.Text
+  status    PageStatus @default(DRAFT)
+
+  seoId     String?    @unique
+  seo       SEO?       @relation(fields: [seoId], references: [id])
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([slug])
+  @@map("pages")
+}
+
+// ============================================================================
+// SEO (polymorphic-style, one row per entity via 1:1 relations above)
+// ============================================================================
+
+model SEO {
+  id              String   @id @default(cuid())
+  metaTitle       String?
+  metaDescription String?
+  canonicalUrl    String?
+  robotsIndex     Boolean  @default(true)
+  robotsFollow    Boolean  @default(true)
+
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+  ogType          String?  @default("website")
+
+  twitterCard     String?  @default("summary_large_image")
+  twitterTitle    String?
+  twitterDescription String?
+  twitterImage    String?
+
+  structuredData  Json?    // custom JSON-LD override
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category    Category?
+  subcategory Subcategory?
+  company     Company?
+  tool        Tool?
+  collection  Collection?
+  blogPost    BlogPost?
+  page        Page?
+
+  @@map("seo")
+}
+
+// ============================================================================
+// FAQ (attachable to Tool or BlogPost)
+// ============================================================================
+
+model FAQ {
+  id         String    @id @default(cuid())
+  question   String
+  answer     String    @db.Text
+  order      Int       @default(0)
+
+  toolId     String?
+  tool       Tool?     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+
+  blogPostId String?
+  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+
+  @@index([toolId])
+  @@index([blogPostId])
+  @@map("faqs")
+}
+
+// ============================================================================
+// ANALYTICS (lightweight first-party event log)
+// ============================================================================
+
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  eventType  String   // page_view, tool_click, search, outbound_click
+  entityType String?  // tool, category, blog_post, page
+  entityId   String?
+  path       String?
+  referrer   String?
+  country    String?
+  device     String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([eventType, createdAt])
+  @@index([entityType, entityId])
+  @@map("analytics_events")
+}
+
+// ============================================================================
+// NEWSLETTER
+// ============================================================================
+
+model NewsletterSubscriber {
+  id            String           @id @default(cuid())
+  email         String           @unique
+  status        NewsletterStatus @default(PENDING)
+  confirmToken  String?          @unique
+  unsubscribeToken String?       @unique
+  subscribedAt  DateTime?
+  unsubscribedAt DateTime?
+  source        String?          // e.g. "homepage_footer", "blog_post"
+  createdAt     DateTime         @default(now())
+
+  @@index([status])
+  @@map("newsletter_subscribers")
+}
+
+// ============================================================================
+// SETTINGS (singleton key-value config table)
+// ============================================================================
+
+model Settings {
+  id                String   @id @default("global")
+  siteName          String   @default("ToolVerse")
+  siteDescription   String?
+  siteUrl           String?
+  logoUrl           String?
+  faviconUrl        String?
+
+  defaultMetaTitle  String?
+  defaultMetaDescription String?
+  defaultOgImage    String?
+
+  googleAnalyticsId String?
+  googleSearchConsoleId String?
+  adsenseClientId   String?
+  adsensePubId      String?
+
+  socialTwitter     String?
+  socialLinkedin    String?
+  socialGithub      String?
+  socialFacebook    String?
+
+  contactEmail      String?
+  supportEmail      String?
+
+  maintenanceMode   Boolean  @default(false)
+
+  updatedAt         DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// ============================================================================
+// REDIRECTS
+// ============================================================================
+
+model Redirect {
+  id          String       @id @default(cuid())
+  fromPath    String       @unique
+  toPath      String
+  type        RedirectType @default(PERMANENT)
+  isActive    Boolean      @default(true)
+  hitCount    Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([fromPath])
+  @@map("redirects")
+}
+
+// ============================================================================
+// MEDIA LIBRARY (Cloudinary-backed)
+// ============================================================================
+
+model Media {
+  id            String    @id @default(cuid())
+  publicId      String    @unique // Cloudinary public_id
+  url           String
+  secureUrl     String
+  type          MediaType @default(IMAGE)
+  altText       String?
+  caption       String?
+  width         Int?
+  height        Int?
+  format        String?
+  bytes         Int?
+  folder        String?
+  uploadedByAdminId String?
+
+  createdAt     DateTime  @default(now())
+
+  @@index([type])
+  @@index([folder])
+  @@map("media")
+}
