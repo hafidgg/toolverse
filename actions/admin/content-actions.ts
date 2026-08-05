@@ -86,6 +86,21 @@ function estimateReadingTime(content: string): number {
 export async function createBlogPost(input: BlogPostInput) {
   const session = await requireAdmin();
   const data = blogPostSchema.parse(input);
+
+  // Create the SEO row first (if any metadata was provided), then link it via
+  // the scalar `seoId` FK. This keeps the BlogPost `create` call fully in the
+  // "Unchecked" input style (consistent with passing `authorId`/`categoryId`
+  // as scalars) — mixing scalar FKs with a nested `seo: { create }` on the
+  // same call is a type error, since Prisma resolves to a single input
+  // variant per call.
+  let seoId: string | undefined;
+  if (data.metaTitle || data.metaDescription) {
+    const seo = await prisma.seo.create({
+      data: { metaTitle: data.metaTitle, metaDescription: data.metaDescription },
+    });
+    seoId = seo.id;
+  }
+
   const post = await prisma.blogPost.create({
     data: {
       title: data.title,
@@ -98,7 +113,7 @@ export async function createBlogPost(input: BlogPostInput) {
       readingTimeMins: estimateReadingTime(data.content),
       publishedAt: data.status === "PUBLISHED" ? new Date() : null,
       authorId: session.adminId,
-      seo: { create: { metaTitle: data.metaTitle, metaDescription: data.metaDescription } },
+      seoId,
     },
   });
   revalidatePath("/admin/blog");
@@ -109,6 +124,31 @@ export async function createBlogPost(input: BlogPostInput) {
 export async function updateBlogPost(id: string, input: BlogPostInput) {
   await requireAdmin();
   const data = blogPostSchema.parse(input);
+
+  const existing = await prisma.blogPost.findUnique({
+    where: { id },
+    select: { seoId: true },
+  });
+
+  // Upsert the SEO row: create one if the post never had one and metadata was
+  // provided now, otherwise update the existing row in place. Kept as a
+  // separate step for the same reason as createBlogPost — a scalar `seoId`
+  // FK and a nested `seo` write can't be mixed in a single Unchecked call.
+  let seoId = existing?.seoId ?? undefined;
+  if (data.metaTitle || data.metaDescription) {
+    if (seoId) {
+      await prisma.seo.update({
+        where: { id: seoId },
+        data: { metaTitle: data.metaTitle, metaDescription: data.metaDescription },
+      });
+    } else {
+      const seo = await prisma.seo.create({
+        data: { metaTitle: data.metaTitle, metaDescription: data.metaDescription },
+      });
+      seoId = seo.id;
+    }
+  }
+
   await prisma.blogPost.update({
     where: { id },
     data: {
@@ -120,6 +160,7 @@ export async function updateBlogPost(id: string, input: BlogPostInput) {
       categoryId: data.categoryId,
       status: data.status,
       readingTimeMins: estimateReadingTime(data.content),
+      seoId,
     },
   });
   revalidatePath("/admin/blog");

@@ -140,7 +140,7 @@ model Category {
   isActive      Boolean       @default(true)
 
   seoId         String?       @unique
-  seo           SEO?          @relation(fields: [seoId], references: [id])
+  seo           Seo?          @relation(fields: [seoId], references: [id])
 
   subcategories Subcategory[]
   tools         Tool[]
@@ -168,7 +168,7 @@ model Subcategory {
   tools         Tool[]
 
   seoId         String?   @unique
-  seo           SEO?      @relation(fields: [seoId], references: [id])
+  seo           Seo?      @relation(fields: [seoId], references: [id])
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -224,7 +224,7 @@ model Company {
   tools         Tool[]
 
   seoId         String?  @unique
-  seo           SEO?     @relation(fields: [seoId], references: [id])
+  seo           Seo?     @relation(fields: [seoId], references: [id])
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -288,7 +288,7 @@ model Tool {
   alternativesTo    ToolAlternative[] @relation("ToolAlternativeTarget")
 
   seoId             String?      @unique
-  seo               SEO?         @relation(fields: [seoId], references: [id])
+  seo               Seo?         @relation(fields: [seoId], references: [id])
 
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
@@ -448,7 +448,7 @@ model Collection {
   tools       CollectionTool[]
 
   seoId       String?  @unique
-  seo         SEO?     @relation(fields: [seoId], references: [id])
+  seo         Seo?     @relation(fields: [seoId], references: [id])
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -499,7 +499,7 @@ model BlogPost {
   viewCount       Int        @default(0)
 
   seoId           String?    @unique
-  seo             SEO?       @relation(fields: [seoId], references: [id])
+  seo             Seo?       @relation(fields: [seoId], references: [id])
 
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
@@ -533,7 +533,7 @@ model Page {
   status    PageStatus @default(DRAFT)
 
   seoId     String?    @unique
-  seo       SEO?       @relation(fields: [seoId], references: [id])
+  seo       Seo?       @relation(fields: [seoId], references: [id])
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -546,7 +546,7 @@ model Page {
 // SEO (polymorphic-style, one row per entity via 1:1 relations above)
 // ============================================================================
 
-model SEO {
+model Seo {
   id              String   @id @default(cuid())
   metaTitle       String?
   metaDescription String?

@@ -21,6 +21,19 @@ export async function createTool(input: ToolFormInput) {
   const admin = await requireAdmin();
   const data = toolFormSchema.parse(input);
 
+  // Create the SEO row first (if metadata was provided) and link it via the
+  // scalar `seoId` FK. Passing categoryId/subcategoryId/companyId as raw
+  // scalars forces this call into Prisma's "Unchecked" input variant, which
+  // is incompatible with a nested `seo: { create }` write on the same call —
+  // that combination is the exact error `next build` caught.
+  let seoId: string | undefined;
+  if (data.metaTitle || data.metaDescription) {
+    const seo = await prisma.seo.create({
+      data: { metaTitle: data.metaTitle, metaDescription: data.metaDescription },
+    });
+    seoId = seo.id;
+  }
+
   const tool = await prisma.tool.create({
     data: {
       name: data.name,
@@ -43,12 +56,7 @@ export async function createTool(input: ToolFormInput) {
       companyId: data.companyId ?? undefined,
       tags: { create: data.tagIds.map((tagId) => ({ tagId })) },
       platforms: { create: data.platformIds.map((platformId) => ({ platformId })) },
-      seo: {
-        create: {
-          metaTitle: data.metaTitle,
-          metaDescription: data.metaDescription,
-        },
-      },
+      seoId,
     },
   });
 
@@ -72,6 +80,26 @@ export async function updateTool(toolId: string, input: ToolFormInput) {
   const admin = await requireAdmin();
   const data = toolFormSchema.parse(input);
 
+  const existing = await prisma.tool.findUnique({
+    where: { id: toolId },
+    select: { seoId: true },
+  });
+
+  let seoId = existing?.seoId ?? undefined;
+  if (data.metaTitle || data.metaDescription) {
+    if (seoId) {
+      await prisma.seo.update({
+        where: { id: seoId },
+        data: { metaTitle: data.metaTitle, metaDescription: data.metaDescription },
+      });
+    } else {
+      const seo = await prisma.seo.create({
+        data: { metaTitle: data.metaTitle, metaDescription: data.metaDescription },
+      });
+      seoId = seo.id;
+    }
+  }
+
   await prisma.$transaction(async (tx) => {
     await tx.tool.update({
       where: { id: toolId },
@@ -93,6 +121,7 @@ export async function updateTool(toolId: string, input: ToolFormInput) {
         categoryId: data.categoryId,
         subcategoryId: data.subcategoryId ?? null,
         companyId: data.companyId ?? null,
+        seoId,
       },
     });
 
