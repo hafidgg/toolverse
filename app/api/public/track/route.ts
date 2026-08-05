@@ -8,12 +8,17 @@ import { prisma } from "@/lib/db/client";
 // Zod boundary but fail at the Prisma call site, since `unknown` isn't
 // assignable to Prisma's JSON input type without narrowing — this schema
 // does that narrowing for real, so no cast is needed downstream.
+//
+// Note: `InputJsonValue` deliberately excludes `null` (even nested) — Prisma
+// requires the `Prisma.JsonNull` sentinel to represent JSON null explicitly,
+// a plain `null` literal isn't part of the type. Analytics metadata is
+// small, application-defined event context (not arbitrary user JSON), so we
+// simply don't accept `null` values here rather than reaching for a sentinel.
 const jsonValueSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
   z.union([
     z.string(),
     z.number(),
     z.boolean(),
-    z.null(),
     z.array(jsonValueSchema),
     z.record(z.string(), jsonValueSchema),
   ])
