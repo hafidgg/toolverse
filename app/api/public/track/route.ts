@@ -1,13 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
+
+// A recursive JSON schema whose inferred type structurally matches Prisma's
+// `InputJsonValue`. Using `z.unknown()` for metadata would type-check at the
+// Zod boundary but fail at the Prisma call site, since `unknown` isn't
+// assignable to Prisma's JSON input type without narrowing — this schema
+// does that narrowing for real, so no cast is needed downstream.
+const jsonValueSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
+  z.union([
+    z.string(),
+    z.number(),
+    z.boolean(),
+    z.null(),
+    z.array(jsonValueSchema),
+    z.record(z.string(), jsonValueSchema),
+  ])
+);
 
 const eventSchema = z.object({
   eventType: z.enum(["page_view", "tool_click", "search", "outbound_click"]),
   entityType: z.string().max(50).optional(),
   entityId: z.string().max(100).optional(),
   path: z.string().max(300).optional(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
+  metadata: z.record(z.string(), jsonValueSchema).optional(),
 });
 
 export async function POST(req: NextRequest) {
