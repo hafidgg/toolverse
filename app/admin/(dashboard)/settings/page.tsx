@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ChangePasswordForm } from "@/components/admin/change-password-form";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,15 @@ export default async function AdminSettingsPage() {
     <div className="max-w-2xl">
       <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
       <p className="mt-1 text-sm text-muted-foreground">Global site configuration.</p>
+
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="text-base">Your Account</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChangePasswordForm />
+        </CardContent>
+      </Card>
 
       <form action={updateSettingsFromForm} className="mt-6 space-y-6">
         <Card>
