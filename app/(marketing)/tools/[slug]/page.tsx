@@ -7,6 +7,7 @@ import {
   breadcrumbSchema,
   softwareApplicationSchema,
   faqSchema,
+  toSafeJsonLd,
   type JsonLdSchema,
 } from "@/lib/seo/metadata";
 import { getToolBySlug, getAllPublishedToolSlugs } from "@/services/tool-service";
@@ -76,7 +77,7 @@ export default async function ToolPage({
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: toSafeJsonLd(schema) }}
         />
       ))}
 

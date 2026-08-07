@@ -132,4 +132,17 @@ export function faqSchema(items: { question: string; answer: string }[]) {
 /** Loose JSON-LD object shape used when combining multiple schema builders in one array. */
 export type JsonLdSchema = Record<string, unknown>;
 
+/**
+ * Safely serializes a JSON-LD object for embedding in a <script> tag via
+ * dangerouslySetInnerHTML. Plain `JSON.stringify` is not safe here: if any
+ * string value contains the literal sequence `</script>`, the browser's HTML
+ * parser closes the script tag right there — regardless of it being inside a
+ * JS string — letting whatever follows execute as raw HTML/script. Escaping
+ * `<` as `\u003c` prevents that breakout while leaving the JSON semantically
+ * identical (script parses `\u003c` back to `<` at runtime, same as `<`).
+ */
+export function toSafeJsonLd(schema: JsonLdSchema): string {
+  return JSON.stringify(schema).replace(/</g, "\\u003c");
+}
+
 export { SITE_NAME, SITE_URL };

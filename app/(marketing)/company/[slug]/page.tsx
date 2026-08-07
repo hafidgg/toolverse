@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { Globe, Twitter, Linkedin, Github } from "lucide-react";
 import { prisma } from "@/lib/db/client";
-import { buildMetadata, breadcrumbSchema } from "@/lib/seo/metadata";
+import { buildMetadata, breadcrumbSchema, toSafeJsonLd } from "@/lib/seo/metadata";
 import { ToolCard } from "@/components/shared/tool-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -69,7 +69,7 @@ export default async function CompanyPage({
 
   return (
     <main className="container py-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toSafeJsonLd(jsonLd) }} />
       <Breadcrumbs
         items={[
           { name: "Home", href: "/" },

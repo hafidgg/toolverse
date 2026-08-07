@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { breadcrumbSchema, faqSchema, buildMetadata } from "@/lib/seo/metadata";
+import { breadcrumbSchema, faqSchema, buildMetadata, toSafeJsonLd } from "@/lib/seo/metadata";
 
 describe("breadcrumbSchema", () => {
   it("builds a valid BreadcrumbList JSON-LD structure", () => {
@@ -31,5 +31,26 @@ describe("buildMetadata", () => {
   it("sets noindex robots when requested", () => {
     const metadata = buildMetadata({ path: "/search", noindex: true });
     expect(metadata.robots).toEqual({ index: false, follow: false });
+  });
+});
+
+describe("toSafeJsonLd", () => {
+  it("escapes </script> sequences to prevent tag-breakout XSS", () => {
+    const malicious = { name: 'Evil</script><script>alert(1)</script>' };
+    const serialized = toSafeJsonLd(malicious);
+    expect(serialized).not.toContain("</script>");
+    expect(serialized).toContain("\\u003c");
+  });
+
+  it("round-trips back to the original value when parsed", () => {
+    const original = { title: "A </script> tag", nested: { x: 1 } };
+    const serialized = toSafeJsonLd(original);
+    expect(JSON.parse(serialized)).toEqual(original);
+  });
+
+  it("produces valid JSON for normal data with no special characters", () => {
+    const schema = { "@type": "Organization", name: "ToolVerse" };
+    const serialized = toSafeJsonLd(schema);
+    expect(JSON.parse(serialized)).toEqual(schema);
   });
 });
