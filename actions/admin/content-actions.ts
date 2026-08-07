@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db/client";
 import { getSession } from "@/lib/auth/session";
@@ -242,6 +242,7 @@ export async function updateSettings(input: SettingsInput) {
     create: { id: "global", ...data },
     update: data,
   });
+  revalidateTag("settings");
   revalidatePath("/admin/settings");
   return { success: true };
 }
