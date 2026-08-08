@@ -37,6 +37,12 @@ enum ToolStatus {
   ARCHIVED
 }
 
+enum VerificationStatus {
+  UNVERIFIED
+  SOURCE_CHECKED
+  EDITOR_REVIEWED
+}
+
 enum BlogStatus {
   DRAFT
   PUBLISHED
@@ -262,6 +268,14 @@ model Tool {
   viewCount         Int          @default(0)
   clickCount        Int          @default(0)
   upvoteCount        Int          @default(0)
+
+  // Content provenance (internal — not exposed on any public page; used by
+  // the content seeding/audit pipeline to track what's actually been
+  // verified vs. what still needs review before being trusted editorially).
+  sourceUrl           String?
+  sourceType          String?              // e.g. "official_website", "press_release"
+  lastVerifiedAt       DateTime?
+  verificationStatus  VerificationStatus   @default(UNVERIFIED)
 
   // Relations — taxonomy
   categoryId        String

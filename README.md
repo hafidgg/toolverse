@@ -79,6 +79,45 @@ npm test              # unit tests (Vitest)
 npm run test:e2e       # e2e smoke tests (Playwright, needs a running app + DB)
 ```
 
+## Content Seeding
+
+ToolVerse's tool/company/category/collection data lives as version-controlled
+JSON in `data/`, not hardcoded or entered exclusively by hand through the
+admin panel (though the admin panel works fine for one-off edits after
+seeding).
+
+```bash
+npm run validate-content   # checks data/ for structural errors, duplicates,
+                            # fake URLs, placeholder text — no DB needed
+npm run seed                # full seed: admin account + settings + all content
+npm run seed:content        # content only (categories/companies/tools/collections)
+npm run content-audit        # reports on the database after seeding
+```
+
+- **Where source data lives**: `data/taxonomy/`, `data/companies/companies.json`,
+  `data/tools/tools.json`, `data/collections/collections.json`.
+- **How to add a tool / category / company / collection**: see
+  [`docs/content-guide.md`](docs/content-guide.md) — the editorial standard,
+  including the "never invent data" rule and what each `verificationStatus`
+  value means.
+- **How the seeding engine works internally** (idempotency, the `Seo`
+  relation pattern, schema provenance fields): see
+  [`docs/content-seeding.md`](docs/content-seeding.md).
+- **What already exists in the codebase and why nothing was duplicated**: see
+  [`docs/content-seeding-audit.md`](docs/content-seeding-audit.md).
+- **Avoiding duplicate records**: every entity is upserted by a stable slug
+  (or name, for tags/platforms/integrations) — running the seed multiple
+  times converges to the same state rather than creating duplicates.
+
+**Current dataset**: 57 tools, 48 companies, 25 categories, 23 subcategories,
+15 collections. 3 tools (`chatgpt`, `notion`, `figma`) were live-verified
+against their official pricing pages this session and marked
+`SOURCE_CHECKED`; the rest are marked `UNVERIFIED` — their identity (name,
+official website, category) is believed accurate, but pricing/platform
+specifics haven't been checked against a live source and should be
+spot-checked before being presented as current, especially prices, which
+change often. See `npm run content-audit` for the live breakdown.
+
 ## Known gaps to close before a real production launch
 
 These are honest, specific gaps — not hidden — so you know exactly what's left:
@@ -96,10 +135,12 @@ These are honest, specific gaps — not hidden — so you know exactly what's le
    table and API route exist; sending is not implemented.
 6. **No image-domain restriction beyond Cloudinary** in `next.config.ts` — add more
    `remotePatterns` if you pull logos from other hosts.
+7. **Most seeded tools are `UNVERIFIED`** (57 of 60 entities) — see Content Seeding above.
+   Spot-check pricing/platforms against official sources before treating the dataset as
+   fully current, and run the seed's live-verification pass on more entries over time.
 
 Everything else described in the original spec — SEO layer, security layer, performance
 patterns (ISR, `unstable_cache`, static params), AdSense-ready layout, responsive design,
 error/loading/empty states, pagination, internal linking, related/featured/trending/latest
 tool sections — is implemented in working code, not a stub.
 
-"# toolverse" 

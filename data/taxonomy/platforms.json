@@ -1,0 +1,9 @@
+[
+  { "name": "Web", "slug": "web" },
+  { "name": "iOS", "slug": "ios" },
+  { "name": "Android", "slug": "android" },
+  { "name": "Windows", "slug": "windows" },
+  { "name": "macOS", "slug": "macos" },
+  { "name": "Linux", "slug": "linux" },
+  { "name": "API", "slug": "api" }
+]

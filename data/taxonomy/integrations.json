@@ -1,0 +1,18 @@
+[
+  { "name": "Slack", "slug": "slack" },
+  { "name": "GitHub", "slug": "github" },
+  { "name": "GitLab", "slug": "gitlab" },
+  { "name": "Google Drive", "slug": "google-drive" },
+  { "name": "Zapier", "slug": "zapier" },
+  { "name": "Figma", "slug": "figma" },
+  { "name": "Notion", "slug": "notion" },
+  { "name": "Salesforce", "slug": "salesforce" },
+  { "name": "HubSpot", "slug": "hubspot" },
+  { "name": "Zoom", "slug": "zoom" },
+  { "name": "Microsoft Teams", "slug": "microsoft-teams" },
+  { "name": "Trello", "slug": "trello" },
+  { "name": "Jira", "slug": "jira" },
+  { "name": "Google Calendar", "slug": "google-calendar" },
+  { "name": "Stripe", "slug": "stripe" },
+  { "name": "Discord", "slug": "discord" }
+]

@@ -34,6 +34,14 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
   },
+  // The temporary content-seed route reads data/*.json via fs at runtime
+  // (not a static import), so Next's automatic serverless file tracing
+  // won't pick it up on its own — this makes sure those files are actually
+  // bundled into that route's function output on Vercel. Safe to remove
+  // once app/api/admin/seed-content-once/route.ts is deleted.
+  outputFileTracingIncludes: {
+    "/api/admin/seed-content-once/route": ["./data/**/*"],
+  },
   async headers() {
     return [
       {

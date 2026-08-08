@@ -1,0 +1,35 @@
+[
+  { "name": "AI Chatbots", "slug": "ai-chatbots", "categorySlug": "ai-tools", "description": "Conversational AI assistants." },
+  { "name": "AI Image Generation", "slug": "ai-image-generation", "categorySlug": "ai-tools", "description": "Text-to-image and AI art tools." },
+  { "name": "AI Writing", "slug": "ai-writing", "categorySlug": "ai-tools", "description": "AI-assisted writing and editing." },
+  { "name": "AI Coding Assistants", "slug": "ai-coding-assistants", "categorySlug": "ai-tools", "description": "AI pair-programming and code generation." },
+
+  { "name": "Note Taking", "slug": "note-taking", "categorySlug": "productivity", "description": "Notes, docs, and knowledge bases." },
+  { "name": "Task Management", "slug": "task-management", "categorySlug": "productivity", "description": "To-do lists and personal task tracking." },
+
+  { "name": "UI/UX Design", "slug": "ui-ux-design", "categorySlug": "design", "description": "Interface design and prototyping." },
+  { "name": "Graphic Design", "slug": "graphic-design", "categorySlug": "design", "description": "General graphic and visual design." },
+
+  { "name": "Code Editors", "slug": "code-editors", "categorySlug": "developer-tools", "description": "IDEs and source code editors." },
+  { "name": "Version Control", "slug": "version-control", "categorySlug": "developer-tools", "description": "Git hosting and code collaboration." },
+  { "name": "API Tools", "slug": "api-tools", "categorySlug": "developer-tools", "description": "API design, testing, and documentation." },
+
+  { "name": "Email Marketing", "slug": "email-marketing", "categorySlug": "marketing", "description": "Email campaign platforms." },
+  { "name": "Social Media Marketing", "slug": "social-media-marketing", "categorySlug": "marketing", "description": "Social scheduling and management." },
+
+  { "name": "Video Editing", "slug": "video-editing", "categorySlug": "video", "description": "Editing and post-production." },
+  { "name": "Screen Recording", "slug": "screen-recording", "categorySlug": "video", "description": "Screen capture and async video." },
+
+  { "name": "CRM", "slug": "crm", "categorySlug": "sales", "description": "Customer relationship management." },
+
+  { "name": "Live Chat", "slug": "live-chat", "categorySlug": "customer-support", "description": "Real-time chat widgets and support." },
+
+  { "name": "Video Conferencing", "slug": "video-conferencing", "categorySlug": "communication", "description": "Video calls and virtual meetings." },
+  { "name": "Team Messaging", "slug": "team-messaging", "categorySlug": "communication", "description": "Chat-based team communication." },
+
+  { "name": "Password Managers", "slug": "password-managers", "categorySlug": "security", "description": "Credential storage and management." },
+  { "name": "VPN", "slug": "vpn", "categorySlug": "security", "description": "Virtual private network services." },
+
+  { "name": "Website Builders", "slug": "website-builders", "categorySlug": "no-code", "description": "Drag-and-drop website creation." },
+  { "name": "App Builders", "slug": "app-builders", "categorySlug": "no-code", "description": "No-code mobile/web app creation." }
+]

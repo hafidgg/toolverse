@@ -1,0 +1,107 @@
+[
+  {
+    "title": "Best Free AI Tools",
+    "slug": "best-free-ai-tools",
+    "description": "AI tools with a genuinely usable free tier — not just a trial.",
+    "isFeatured": true,
+    "toolSlugs": ["chatgpt", "claude", "google-gemini", "grammarly", "vs-code"]
+  },
+  {
+    "title": "Best AI Chatbots",
+    "slug": "best-ai-chatbots",
+    "description": "Leading conversational AI assistants for research, writing, and coding help.",
+    "isFeatured": true,
+    "toolSlugs": ["chatgpt", "claude", "google-gemini"]
+  },
+  {
+    "title": "Best AI Coding Assistants",
+    "slug": "best-ai-coding-assistants",
+    "description": "AI-powered tools that help you write and debug code faster.",
+    "isFeatured": false,
+    "toolSlugs": ["github-copilot", "cursor", "chatgpt"]
+  },
+  {
+    "title": "Best Developer Tools",
+    "slug": "best-developer-tools",
+    "description": "Core tools for writing, testing, and shipping code.",
+    "isFeatured": true,
+    "toolSlugs": ["vs-code", "github", "gitlab", "postman", "docker", "intellij-idea"]
+  },
+  {
+    "title": "Best Productivity Tools",
+    "slug": "best-productivity-tools",
+    "description": "Apps for organizing notes, tasks, and daily work.",
+    "isFeatured": true,
+    "toolSlugs": ["notion", "todoist", "obsidian", "dropbox", "google-drive"]
+  },
+  {
+    "title": "Best Design Tools",
+    "slug": "best-design-tools",
+    "description": "Tools for interface design, prototyping, and graphic design.",
+    "isFeatured": true,
+    "toolSlugs": ["figma", "canva", "adobe-photoshop", "adobe-illustrator", "sketch"]
+  },
+  {
+    "title": "Best Project Management Tools",
+    "slug": "best-project-management-tools",
+    "description": "Platforms for planning, tracking, and delivering team projects.",
+    "isFeatured": true,
+    "toolSlugs": ["asana", "trello", "monday-com", "jira", "linear"]
+  },
+  {
+    "title": "Best SEO Tools",
+    "slug": "best-seo-tools",
+    "description": "Research and tracking tools for search engine optimization.",
+    "isFeatured": false,
+    "toolSlugs": ["semrush", "ahrefs"]
+  },
+  {
+    "title": "Best Marketing Tools",
+    "slug": "best-marketing-tools",
+    "description": "Email, social, and campaign tools for growing an audience.",
+    "isFeatured": false,
+    "toolSlugs": ["mailchimp", "hubspot", "buffer"]
+  },
+  {
+    "title": "Best Open Source Tools",
+    "slug": "best-open-source-tools",
+    "description": "Notable open-source and self-hostable software.",
+    "isFeatured": false,
+    "toolSlugs": ["vs-code", "gitlab", "bitwarden", "supabase", "docker", "obsidian"]
+  },
+  {
+    "title": "Best Automation Tools",
+    "slug": "best-automation-tools",
+    "description": "Connect apps and automate repetitive work without code.",
+    "isFeatured": false,
+    "toolSlugs": ["zapier", "webflow", "airtable"]
+  },
+  {
+    "title": "Best No-Code Tools",
+    "slug": "best-no-code-tools",
+    "description": "Build websites, apps, and workflows without writing code.",
+    "isFeatured": false,
+    "toolSlugs": ["webflow", "airtable", "zapier"]
+  },
+  {
+    "title": "Best Tools for Startups",
+    "slug": "best-tools-for-startups",
+    "description": "A lean, practical stack for an early-stage team.",
+    "isFeatured": true,
+    "toolSlugs": ["notion", "linear", "vercel", "figma", "stripe", "slack"]
+  },
+  {
+    "title": "Best Communication Tools",
+    "slug": "best-communication-tools",
+    "description": "Chat, video calls, and team messaging platforms.",
+    "isFeatured": false,
+    "toolSlugs": ["slack", "zoom", "microsoft-teams", "discord"]
+  },
+  {
+    "title": "Best Customer Support Tools",
+    "slug": "best-customer-support-tools",
+    "description": "Helpdesk and live chat platforms for supporting customers.",
+    "isFeatured": false,
+    "toolSlugs": ["zendesk", "intercom"]
+  }
+]

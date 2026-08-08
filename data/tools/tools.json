@@ -1,0 +1,2446 @@
+[
+  {
+    "name": "ChatGPT",
+    "slug": "chatgpt",
+    "tagline": "Conversational AI assistant from OpenAI",
+    "description": "General-purpose AI chatbot for writing, research, coding help, and analysis, built on OpenAI's GPT model family.",
+    "websiteUrl": "https://chatgpt.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": 8,
+    "currency": "USD",
+    "categorySlug": "ai-tools",
+    "subcategorySlug": "ai-chatbots",
+    "companySlug": "openai",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "AI-Powered",
+      "Mobile App"
+    ],
+    "features": [
+      "Natural language conversation",
+      "Web browsing and research",
+      "Code generation and debugging",
+      "Custom GPTs",
+      "Voice mode"
+    ],
+    "pros": [
+      "Free tier is genuinely usable, not just a trial",
+      "Frequent model upgrades included in subscription"
+    ],
+    "cons": [
+      "Paid tier lineup has grown complex with multiple price points",
+      "Usage limits still apply even on paid plans"
+    ],
+    "faqs": [
+      {
+        "q": "Is there a free plan?",
+        "a": "Yes, ChatGPT offers a free tier with access to a base model and limited usage of more advanced features."
+      }
+    ],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "SOURCE_CHECKED",
+    "sourceUrl": "https://chatgpt.com/pricing/",
+    "sourceType": "official_website"
+  },
+  {
+    "name": "Claude",
+    "slug": "claude",
+    "tagline": "AI assistant from Anthropic",
+    "description": "Conversational AI assistant built by Anthropic, positioned around careful, steerable responses and long-context reasoning.",
+    "websiteUrl": "https://claude.ai",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": 20,
+    "currency": "USD",
+    "categorySlug": "ai-tools",
+    "subcategorySlug": "ai-chatbots",
+    "companySlug": "anthropic",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "AI-Powered",
+      "Mobile App"
+    ],
+    "features": [
+      "Long context window for large documents",
+      "Projects for organizing related conversations",
+      "Artifacts for generating documents/code inline",
+      "API access for developers"
+    ],
+    "pros": [
+      "Strong performance on long-document analysis",
+      "Clear, structured responses"
+    ],
+    "cons": [
+      "Free tier usage limits reset on a rolling window that can feel restrictive"
+    ],
+    "faqs": [],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "SOURCE_CHECKED",
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "sourceType": "official_website"
+  },
+  {
+    "name": "Google Gemini",
+    "slug": "google-gemini",
+    "tagline": "Google's AI assistant",
+    "description": "Google's conversational AI assistant, integrated across Search, Workspace, and Android.",
+    "websiteUrl": "https://gemini.google.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "ai-tools",
+    "subcategorySlug": "ai-chatbots",
+    "companySlug": "google",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Google Drive",
+      "Google Calendar"
+    ],
+    "tagSlugs": [
+      "AI-Powered",
+      "Mobile App"
+    ],
+    "features": [
+      "Deep integration with Google Workspace",
+      "Multimodal input (text, image, voice)"
+    ],
+    "pros": [
+      "Tight integration with Gmail, Docs, and Calendar for existing Google users"
+    ],
+    "cons": [
+      "Full feature set is spread across several Google product surfaces"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Midjourney",
+    "slug": "midjourney",
+    "tagline": "AI image generation via Discord",
+    "description": "AI image generation tool best known for stylized, artistic output, accessed primarily through Discord.",
+    "websiteUrl": "https://midjourney.com",
+    "pricingModel": "SUBSCRIPTION",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "ai-tools",
+    "subcategorySlug": "ai-image-generation",
+    "companySlug": null,
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [
+      "Discord"
+    ],
+    "tagSlugs": [
+      "AI-Powered"
+    ],
+    "features": [
+      "Text-to-image generation",
+      "Image upscaling and variation",
+      "Style reference tools"
+    ],
+    "pros": [
+      "Distinctive, widely-imitated visual style",
+      "Active community for prompt sharing"
+    ],
+    "cons": [
+      "No free tier",
+      "Discord-first workflow has a learning curve for newcomers"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Grammarly",
+    "slug": "grammarly",
+    "tagline": "AI writing assistant",
+    "description": "Writing assistant that checks grammar, clarity, tone, and style across browsers, desktop apps, and Microsoft Office.",
+    "websiteUrl": "https://grammarly.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "writing",
+    "subcategorySlug": "ai-writing",
+    "companySlug": "grammarly",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "AI-Powered",
+      "Chrome Extension",
+      "Mobile App"
+    ],
+    "features": [
+      "Grammar and spelling correction",
+      "Tone detection",
+      "Plagiarism checking (paid)",
+      "Browser extension"
+    ],
+    "pros": [
+      "Works across most writing surfaces via browser extension",
+      "Free tier covers core grammar checking"
+    ],
+    "cons": [
+      "Advanced style/tone suggestions require a paid plan"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Cursor",
+    "slug": "cursor",
+    "tagline": "AI-native code editor",
+    "description": "Code editor built around AI pair-programming, forked from VS Code with deep AI code generation and chat built in.",
+    "websiteUrl": "https://cursor.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "ai-coding-assistants",
+    "companySlug": null,
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [
+      "GitHub"
+    ],
+    "tagSlugs": [
+      "AI-Powered"
+    ],
+    "features": [
+      "AI chat with codebase context",
+      "Inline AI code editing",
+      "Multi-file AI edits"
+    ],
+    "pros": [
+      "Familiar VS Code-based interface",
+      "Strong codebase-aware AI suggestions"
+    ],
+    "cons": [
+      "Heavier AI usage requires a paid plan"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "GitHub Copilot",
+    "slug": "github-copilot",
+    "tagline": "AI pair programmer",
+    "description": "AI code-completion and chat assistant that integrates directly into popular code editors.",
+    "websiteUrl": "https://github.com/features/copilot",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": 10,
+    "currency": "USD",
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "ai-coding-assistants",
+    "companySlug": "github",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [
+      "GitHub"
+    ],
+    "tagSlugs": [
+      "AI-Powered"
+    ],
+    "features": [
+      "Inline code suggestions",
+      "Chat-based coding assistant",
+      "Works across major IDEs"
+    ],
+    "pros": [
+      "Deep GitHub/VS Code integration",
+      "Free tier available for individual limited use"
+    ],
+    "cons": [
+      "Full feature access requires a paid subscription"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "SOURCE_CHECKED",
+    "sourceUrl": "https://github.com/features/copilot/plans",
+    "sourceType": "official_website"
+  },
+  {
+    "name": "Notion",
+    "slug": "notion",
+    "tagline": "All-in-one workspace",
+    "description": "Workspace combining notes, docs, wikis, and lightweight project/database tools in one flexible surface.",
+    "websiteUrl": "https://notion.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": 10,
+    "currency": "USD",
+    "categorySlug": "productivity",
+    "subcategorySlug": "note-taking",
+    "companySlug": "notion-labs",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Google Drive"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Templates",
+      "Mobile App"
+    ],
+    "features": [
+      "Flexible pages and databases",
+      "Templates gallery",
+      "Team workspaces",
+      "Notion AI (paid tiers)"
+    ],
+    "pros": [
+      "Extremely flexible for many different use cases",
+      "Large template ecosystem"
+    ],
+    "cons": [
+      "Can feel unstructured without deliberate setup",
+      "Full AI features require the Business tier"
+    ],
+    "faqs": [
+      {
+        "q": "Is Notion free for individuals?",
+        "a": "Yes, Notion offers a free plan for individual use with unlimited blocks."
+      }
+    ],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "SOURCE_CHECKED",
+    "sourceUrl": "https://www.notion.com/pricing",
+    "sourceType": "official_website"
+  },
+  {
+    "name": "Todoist",
+    "slug": "todoist",
+    "tagline": "Task and to-do list manager",
+    "description": "Task management app for personal and team to-do lists with natural language due dates and recurring tasks.",
+    "websiteUrl": "https://todoist.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "productivity",
+    "subcategorySlug": "task-management",
+    "companySlug": null,
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Cross-Platform",
+      "Mobile App"
+    ],
+    "features": [
+      "Natural language date parsing",
+      "Recurring tasks",
+      "Projects and labels",
+      "Cross-device sync"
+    ],
+    "pros": [
+      "Clean, fast interface",
+      "Generous free tier for personal use"
+    ],
+    "cons": [
+      "Team/collaboration features require a paid plan"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Obsidian",
+    "slug": "obsidian",
+    "tagline": "Local-first note-taking app",
+    "description": "Markdown-based note-taking app that stores files locally and links notes into a personal knowledge graph.",
+    "websiteUrl": "https://obsidian.md",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "productivity",
+    "subcategorySlug": "note-taking",
+    "companySlug": null,
+    "platformSlugs": [
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Offline Support",
+      "Dark Mode"
+    ],
+    "features": [
+      "Local markdown files",
+      "Bi-directional linking",
+      "Graph view",
+      "Large plugin ecosystem"
+    ],
+    "pros": [
+      "Free for personal use",
+      "Full data ownership since notes are local files"
+    ],
+    "cons": [
+      "Official sync/publish add-ons are paid",
+      "Plugin ecosystem quality varies"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Asana",
+    "slug": "asana",
+    "tagline": "Work management platform",
+    "description": "Project and task management platform for teams to plan, track, and coordinate work.",
+    "websiteUrl": "https://asana.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "project-management",
+    "subcategorySlug": null,
+    "companySlug": "asana",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Task lists, boards, and timelines",
+      "Workflow automation rules",
+      "Portfolios for tracking multiple projects"
+    ],
+    "pros": [
+      "Flexible views (list/board/timeline)",
+      "Solid free tier for small teams"
+    ],
+    "cons": [
+      "Can get expensive at scale for advanced features"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Trello",
+    "slug": "trello",
+    "tagline": "Visual Kanban board tool",
+    "description": "Kanban-style board tool for organizing tasks and projects with cards, lists, and automation.",
+    "websiteUrl": "https://trello.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "project-management",
+    "subcategorySlug": null,
+    "companySlug": "atlassian",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Jira"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Kanban boards",
+      "Butler automation",
+      "Power-Ups integrations",
+      "Templates"
+    ],
+    "pros": [
+      "Very easy to learn",
+      "Generous free tier"
+    ],
+    "cons": [
+      "Less suited to complex, dependency-heavy project planning"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Monday.com",
+    "slug": "monday-com",
+    "tagline": "Work operating system",
+    "description": "Customizable work management platform for tracking projects, workflows, and team operations.",
+    "websiteUrl": "https://monday.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "project-management",
+    "subcategorySlug": null,
+    "companySlug": "monday-com",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Zoom"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Customizable boards and columns",
+      "Automation recipes",
+      "Dashboards and reporting"
+    ],
+    "pros": [
+      "Highly customizable for varied workflows"
+    ],
+    "cons": [
+      "No permanently free tier for teams beyond a very limited plan",
+      "Pricing scales per seat"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Jira",
+    "slug": "jira",
+    "tagline": "Issue and project tracking for software teams",
+    "description": "Issue tracking and agile project management tool built for software development teams.",
+    "websiteUrl": "https://www.atlassian.com/software/jira",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "project-management",
+    "subcategorySlug": null,
+    "companySlug": "atlassian",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "GitHub"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Scrum and Kanban boards",
+      "Custom workflows",
+      "Roadmaps",
+      "Extensive app marketplace"
+    ],
+    "pros": [
+      "Deep customization for engineering workflows",
+      "Strong integration with the rest of Atlassian's suite"
+    ],
+    "cons": [
+      "Steep learning curve for non-technical teams"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Linear",
+    "slug": "linear",
+    "tagline": "Issue tracking for modern software teams",
+    "description": "Fast, keyboard-driven issue tracking and project management tool built for software teams.",
+    "websiteUrl": "https://linear.app",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "project-management",
+    "subcategorySlug": null,
+    "companySlug": "linear",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS"
+    ],
+    "integrationSlugs": [
+      "GitHub",
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Team Collaboration"
+    ],
+    "features": [
+      "Keyboard-first workflow",
+      "Cycles for sprint planning",
+      "GitHub integration for linking commits/PRs"
+    ],
+    "pros": [
+      "Very fast, polished interface",
+      "Opinionated defaults reduce setup overhead"
+    ],
+    "cons": [
+      "Free tier has a member limit"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Figma",
+    "slug": "figma",
+    "tagline": "Collaborative interface design tool",
+    "description": "Browser-based design tool for UI/UX design, prototyping, and design systems with real-time multi-user editing.",
+    "websiteUrl": "https://figma.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": 16,
+    "currency": "USD",
+    "categorySlug": "design",
+    "subcategorySlug": "ui-ux-design",
+    "companySlug": "figma-inc",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Real-Time Collaboration",
+      "Mobile App",
+      "Team Collaboration"
+    ],
+    "features": [
+      "Real-time multiplayer editing",
+      "Auto Layout",
+      "Design systems/component libraries",
+      "Dev Mode handoff"
+    ],
+    "pros": [
+      "Real-time collaboration is best-in-class",
+      "Runs in the browser, no install required"
+    ],
+    "cons": [
+      "Paid seat pricing has grown more complex with multiple seat types"
+    ],
+    "faqs": [
+      {
+        "q": "Is Figma free to use?",
+        "a": "Figma offers a free Starter plan with limited files and collaborators; paid plans unlock unlimited projects and team features."
+      }
+    ],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "SOURCE_CHECKED",
+    "sourceUrl": "https://www.figma.com/pricing",
+    "sourceType": "official_website"
+  },
+  {
+    "name": "Canva",
+    "slug": "canva",
+    "tagline": "Online graphic design platform",
+    "description": "Drag-and-drop design tool for social graphics, presentations, and marketing materials, aimed at non-designers.",
+    "websiteUrl": "https://canva.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": 10,
+    "currency": "USD",
+    "categorySlug": "design",
+    "subcategorySlug": "graphic-design",
+    "companySlug": "canva",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Beginner Friendly",
+      "Templates",
+      "Mobile App"
+    ],
+    "features": [
+      "Drag-and-drop editor",
+      "Large template library",
+      "Brand kits",
+      "Background remover (paid)"
+    ],
+    "pros": [
+      "Very approachable for non-designers",
+      "Huge template library"
+    ],
+    "cons": [
+      "Advanced design control is more limited than dedicated design tools"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "SOURCE_CHECKED",
+    "sourceUrl": "https://www.canva.com/en/pricing/",
+    "sourceType": "official_website"
+  },
+  {
+    "name": "Adobe Photoshop",
+    "slug": "adobe-photoshop",
+    "tagline": "Industry-standard image editor",
+    "description": "Professional raster image editing software for photo editing, compositing, and digital art.",
+    "websiteUrl": "https://adobe.com/products/photoshop.html",
+    "pricingModel": "SUBSCRIPTION",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "image-tools",
+    "subcategorySlug": null,
+    "companySlug": "adobe",
+    "platformSlugs": [
+      "Windows",
+      "macOS",
+      "iOS"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Enterprise Ready"
+    ],
+    "features": [
+      "Layer-based editing",
+      "Advanced selection and masking tools",
+      "Generative AI fill",
+      "Extensive plugin ecosystem"
+    ],
+    "pros": [
+      "Industry-standard toolset and file compatibility"
+    ],
+    "cons": [
+      "Subscription-only, no perpetual license option",
+      "Steep learning curve"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Adobe Illustrator",
+    "slug": "adobe-illustrator",
+    "tagline": "Vector graphics editor",
+    "description": "Professional vector graphics software for logos, icons, and illustration work.",
+    "websiteUrl": "https://adobe.com/products/illustrator.html",
+    "pricingModel": "SUBSCRIPTION",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "design",
+    "subcategorySlug": "graphic-design",
+    "companySlug": "adobe",
+    "platformSlugs": [
+      "Windows",
+      "macOS",
+      "iOS"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Enterprise Ready"
+    ],
+    "features": [
+      "Vector path editing",
+      "Typography tools",
+      "Pattern and gradient tools"
+    ],
+    "pros": [
+      "Industry standard for vector illustration"
+    ],
+    "cons": [
+      "Subscription-only pricing"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Sketch",
+    "slug": "sketch",
+    "tagline": "macOS-native design tool",
+    "description": "Vector-based UI design tool built exclusively for macOS, historically popular for interface design.",
+    "websiteUrl": "https://sketch.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "design",
+    "subcategorySlug": "ui-ux-design",
+    "companySlug": null,
+    "platformSlugs": [
+      "macOS"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [],
+    "features": [
+      "Vector editing for UI design",
+      "Reusable symbols/components",
+      "Plugin ecosystem"
+    ],
+    "pros": [
+      "Lightweight, focused toolset for UI design"
+    ],
+    "cons": [
+      "macOS only, no Windows/Linux/web version"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Visual Studio Code",
+    "slug": "vs-code",
+    "tagline": "Free, extensible code editor",
+    "description": "Free, open-source source code editor from Microsoft with a large extension ecosystem, supporting most languages.",
+    "websiteUrl": "https://code.visualstudio.com",
+    "pricingModel": "FREE",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "code-editors",
+    "companySlug": "microsoft",
+    "platformSlugs": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [
+      "GitHub"
+    ],
+    "tagSlugs": [
+      "Open Source",
+      "Cross-Platform",
+      "Dark Mode"
+    ],
+    "features": [
+      "Extension marketplace",
+      "Integrated terminal",
+      "Built-in Git support",
+      "Remote development containers"
+    ],
+    "pros": [
+      "Free and open source",
+      "Enormous extension ecosystem"
+    ],
+    "cons": [
+      "Can become resource-heavy with many extensions installed"
+    ],
+    "faqs": [],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "IntelliJ IDEA",
+    "slug": "intellij-idea",
+    "tagline": "JetBrains Java/Kotlin IDE",
+    "description": "Integrated development environment from JetBrains, widely used for Java and Kotlin development.",
+    "websiteUrl": "https://jetbrains.com/idea",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "code-editors",
+    "companySlug": "jetbrains",
+    "platformSlugs": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [
+      "GitHub"
+    ],
+    "tagSlugs": [],
+    "features": [
+      "Smart code completion",
+      "Refactoring tools",
+      "Built-in debugger and profiler"
+    ],
+    "pros": [
+      "Deep language-aware tooling",
+      "Free Community Edition available"
+    ],
+    "cons": [
+      "Full feature set requires the paid Ultimate edition"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "GitHub",
+    "slug": "github",
+    "tagline": "Git hosting and collaboration platform",
+    "description": "Web-based platform for hosting Git repositories, code review, issue tracking, and CI/CD via Actions.",
+    "websiteUrl": "https://github.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "version-control",
+    "companySlug": "github",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Jira"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Git repository hosting",
+      "Pull requests and code review",
+      "GitHub Actions CI/CD",
+      "Issue tracking"
+    ],
+    "pros": [
+      "De facto standard for open-source hosting",
+      "Deep ecosystem of integrations"
+    ],
+    "cons": [
+      "Private repo collaboration features scale in price with team size"
+    ],
+    "faqs": [],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "GitLab",
+    "slug": "gitlab",
+    "tagline": "DevOps platform",
+    "description": "Git repository management platform with built-in CI/CD, issue tracking, and DevOps tooling.",
+    "websiteUrl": "https://gitlab.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "version-control",
+    "companySlug": "gitlab",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Open Source",
+      "Self-Hostable"
+    ],
+    "features": [
+      "Git hosting",
+      "Built-in CI/CD pipelines",
+      "Issue boards",
+      "Self-hosted option available"
+    ],
+    "pros": [
+      "Self-hostable for teams needing full control",
+      "CI/CD included without third-party tools"
+    ],
+    "cons": [
+      "Interface can feel dense compared to lighter alternatives"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Postman",
+    "slug": "postman",
+    "tagline": "API development platform",
+    "description": "Platform for designing, testing, documenting, and monitoring APIs, widely used by developers.",
+    "websiteUrl": "https://postman.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": "api-tools",
+    "companySlug": "postman",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "API Available"
+    ],
+    "features": [
+      "API request building and testing",
+      "Collections and environments",
+      "Automated API testing",
+      "Mock servers"
+    ],
+    "pros": [
+      "Widely adopted, large community of shared collections"
+    ],
+    "cons": [
+      "Desktop app can be resource-heavy"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Docker",
+    "slug": "docker",
+    "tagline": "Application containerization platform",
+    "description": "Platform for building, sharing, and running applications in lightweight, portable containers.",
+    "websiteUrl": "https://docker.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "developer-tools",
+    "subcategorySlug": null,
+    "companySlug": "docker",
+    "platformSlugs": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Open Source"
+    ],
+    "features": [
+      "Containerization of applications",
+      "Docker Hub image registry",
+      "Docker Compose for multi-container apps"
+    ],
+    "pros": [
+      "Industry-standard containerization workflow"
+    ],
+    "cons": [
+      "Docker Desktop requires a paid license for larger commercial organizations"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Vercel",
+    "slug": "vercel",
+    "tagline": "Frontend cloud deployment platform",
+    "description": "Deployment platform for frontend frameworks and static sites, created by the team behind Next.js.",
+    "websiteUrl": "https://vercel.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "hosting",
+    "subcategorySlug": null,
+    "companySlug": "vercel",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [
+      "GitHub",
+      "GitLab"
+    ],
+    "tagSlugs": [
+      "Startup Friendly"
+    ],
+    "features": [
+      "Git-based automatic deployments",
+      "Preview deployments per pull request",
+      "Edge network and serverless functions"
+    ],
+    "pros": [
+      "Extremely fast setup for frontend frameworks like Next.js",
+      "Generous free tier for personal projects"
+    ],
+    "cons": [
+      "Costs can scale quickly for high-traffic commercial projects"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Netlify",
+    "slug": "netlify",
+    "tagline": "Web project hosting platform",
+    "description": "Platform for building, deploying, and hosting static sites and modern web projects with Git-based workflows.",
+    "websiteUrl": "https://netlify.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "hosting",
+    "subcategorySlug": null,
+    "companySlug": "netlify",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [
+      "GitHub",
+      "GitLab"
+    ],
+    "tagSlugs": [
+      "Startup Friendly"
+    ],
+    "features": [
+      "Git-based continuous deployment",
+      "Serverless functions",
+      "Built-in forms and identity"
+    ],
+    "pros": [
+      "Simple setup for static sites and JAMstack projects"
+    ],
+    "cons": [
+      "Build minutes and bandwidth are limited on the free tier"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "DigitalOcean",
+    "slug": "digitalocean",
+    "tagline": "Cloud infrastructure for developers",
+    "description": "Cloud hosting provider offering virtual servers (Droplets), managed databases, and Kubernetes for developers.",
+    "websiteUrl": "https://digitalocean.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "hosting",
+    "subcategorySlug": null,
+    "companySlug": "digitalocean",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "API Available"
+    ],
+    "features": [
+      "Virtual private servers (Droplets)",
+      "Managed databases",
+      "Managed Kubernetes",
+      "Straightforward pricing"
+    ],
+    "pros": [
+      "Simple, predictable pricing compared to larger cloud providers"
+    ],
+    "cons": [
+      "Fewer managed services than AWS/GCP/Azure"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Cloudflare",
+    "slug": "cloudflare",
+    "tagline": "Web infrastructure and security platform",
+    "description": "CDN, DNS, and security platform that sits in front of websites to improve performance and block attacks.",
+    "websiteUrl": "https://cloudflare.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "security",
+    "subcategorySlug": null,
+    "companySlug": "cloudflare",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "API Available",
+      "Enterprise Ready"
+    ],
+    "features": [
+      "Global CDN",
+      "DDoS protection",
+      "DNS management",
+      "Workers edge compute"
+    ],
+    "pros": [
+      "Strong free tier for basic CDN/security",
+      "Very large global network"
+    ],
+    "cons": [
+      "Advanced security features require paid plans"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "MongoDB",
+    "slug": "mongodb",
+    "tagline": "Document database",
+    "description": "NoSQL document database designed for flexible schemas and horizontal scaling, available self-hosted or as Atlas.",
+    "websiteUrl": "https://mongodb.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "database",
+    "subcategorySlug": null,
+    "companySlug": "mongodb",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Open Source",
+      "API Available"
+    ],
+    "features": [
+      "Flexible document schema",
+      "Horizontal scaling via sharding",
+      "Atlas managed cloud offering"
+    ],
+    "pros": [
+      "Flexible for evolving data models",
+      "Free tier available via Atlas"
+    ],
+    "cons": [
+      "Less suited to workloads needing strict relational integrity"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Supabase",
+    "slug": "supabase",
+    "tagline": "Open-source Firebase alternative",
+    "description": "Backend-as-a-service platform built on PostgreSQL, providing auth, storage, and realtime out of the box.",
+    "websiteUrl": "https://supabase.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "database",
+    "subcategorySlug": null,
+    "companySlug": "supabase",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Open Source",
+      "API Available",
+      "Self-Hostable"
+    ],
+    "features": [
+      "Managed PostgreSQL database",
+      "Built-in authentication",
+      "Auto-generated REST/GraphQL APIs",
+      "Realtime subscriptions"
+    ],
+    "pros": [
+      "Open source with a self-hostable option",
+      "PostgreSQL underneath rather than a proprietary database"
+    ],
+    "cons": [
+      "Younger ecosystem than more established BaaS providers"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Mailchimp",
+    "slug": "mailchimp",
+    "tagline": "Email marketing platform",
+    "description": "Email marketing and marketing automation platform for building campaigns and audiences.",
+    "websiteUrl": "https://mailchimp.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "marketing",
+    "subcategorySlug": "email-marketing",
+    "companySlug": "mailchimp",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Templates",
+      "Mobile App"
+    ],
+    "features": [
+      "Drag-and-drop email builder",
+      "Audience segmentation",
+      "Automation workflows",
+      "Basic landing pages"
+    ],
+    "pros": [
+      "Approachable for small businesses just starting with email marketing"
+    ],
+    "cons": [
+      "Costs scale with contact list size"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "HubSpot",
+    "slug": "hubspot",
+    "tagline": "CRM and marketing platform",
+    "description": "CRM platform bundling marketing, sales, and customer service tools, with a free CRM core.",
+    "websiteUrl": "https://hubspot.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "sales",
+    "subcategorySlug": "crm",
+    "companySlug": "hubspot",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Salesforce"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Free core CRM",
+      "Marketing automation",
+      "Sales pipeline tracking",
+      "Live chat and helpdesk tools"
+    ],
+    "pros": [
+      "Free CRM tier is genuinely usable",
+      "Broad suite covering marketing, sales, and support"
+    ],
+    "cons": [
+      "Advanced features across hubs get expensive when combined"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Semrush",
+    "slug": "semrush",
+    "tagline": "SEO and online visibility platform",
+    "description": "SEO research platform for keyword research, site audits, backlink analysis, and competitor tracking.",
+    "websiteUrl": "https://semrush.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "seo",
+    "subcategorySlug": null,
+    "companySlug": "semrush",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Enterprise Ready"
+    ],
+    "features": [
+      "Keyword research",
+      "Site audit tooling",
+      "Backlink analysis",
+      "Competitor research"
+    ],
+    "pros": [
+      "Broad toolset covering most core SEO workflows in one place"
+    ],
+    "cons": [
+      "No permanently free tier beyond a limited trial"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Ahrefs",
+    "slug": "ahrefs",
+    "tagline": "SEO toolset",
+    "description": "SEO platform centered on backlink data, keyword research, and site audit tooling.",
+    "websiteUrl": "https://ahrefs.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "seo",
+    "subcategorySlug": null,
+    "companySlug": "ahrefs",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [],
+    "features": [
+      "Backlink index and analysis",
+      "Keyword research",
+      "Site audit",
+      "Content explorer"
+    ],
+    "pros": [
+      "Widely regarded backlink database"
+    ],
+    "cons": [
+      "No free tier for the core product"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Buffer",
+    "slug": "buffer",
+    "tagline": "Social media scheduling tool",
+    "description": "Social media scheduling and analytics tool for planning and publishing posts across platforms.",
+    "websiteUrl": "https://buffer.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "marketing",
+    "subcategorySlug": "social-media-marketing",
+    "companySlug": "buffer",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Mobile App"
+    ],
+    "features": [
+      "Post scheduling across platforms",
+      "Basic analytics",
+      "Content calendar"
+    ],
+    "pros": [
+      "Simple, focused interface",
+      "Usable free tier for individuals"
+    ],
+    "cons": [
+      "Fewer advanced listening/analytics features than larger suites"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Slack",
+    "slug": "slack",
+    "tagline": "Team messaging platform",
+    "description": "Channel-based team messaging platform with app integrations, used as a company communication hub.",
+    "websiteUrl": "https://slack.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "communication",
+    "subcategorySlug": "team-messaging",
+    "companySlug": "slack-technologies",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android",
+      "Linux"
+    ],
+    "integrationSlugs": [
+      "Google Drive",
+      "Zoom",
+      "Trello"
+    ],
+    "tagSlugs": [
+      "Team Collaboration",
+      "Mobile App",
+      "Cross-Platform"
+    ],
+    "features": [
+      "Channel-based messaging",
+      "Huey app/integration marketplace",
+      "Huddles for quick audio calls",
+      "Workflow builder"
+    ],
+    "pros": [
+      "Large ecosystem of third-party integrations",
+      "Search across message history"
+    ],
+    "cons": [
+      "Free tier limits searchable message history"
+    ],
+    "faqs": [],
+    "isFeatured": true,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Zoom",
+    "slug": "zoom",
+    "tagline": "Video conferencing platform",
+    "description": "Video conferencing platform for meetings, webinars, and virtual events.",
+    "websiteUrl": "https://zoom.us",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "communication",
+    "subcategorySlug": "video-conferencing",
+    "companySlug": "zoom",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android",
+      "Linux"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Google Calendar"
+    ],
+    "tagSlugs": [
+      "Cross-Platform",
+      "Mobile App"
+    ],
+    "features": [
+      "HD video meetings",
+      "Screen sharing",
+      "Breakout rooms",
+      "Cloud recording (paid)"
+    ],
+    "pros": [
+      "Reliable call quality across varied network conditions",
+      "Free tier covers casual/small meetings"
+    ],
+    "cons": [
+      "Free tier caps group meeting length at 40 minutes"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Microsoft Teams",
+    "slug": "microsoft-teams",
+    "tagline": "Team chat and video platform",
+    "description": "Chat, video meetings, and collaboration platform bundled with Microsoft 365.",
+    "websiteUrl": "https://microsoft.com/microsoft-teams",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "communication",
+    "subcategorySlug": "video-conferencing",
+    "companySlug": "microsoft",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Cross-Platform",
+      "Mobile App"
+    ],
+    "features": [
+      "Chat channels",
+      "Video meetings",
+      "Deep Microsoft 365 integration",
+      "File collaboration via SharePoint/OneDrive"
+    ],
+    "pros": [
+      "Tightly integrated with Microsoft 365 for existing enterprise users"
+    ],
+    "cons": [
+      "Interface can feel heavier than dedicated chat-first tools"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Discord",
+    "slug": "discord",
+    "tagline": "Community chat and voice platform",
+    "description": "Chat and voice platform organized around servers and channels, popular with communities and increasingly teams.",
+    "websiteUrl": "https://discord.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "communication",
+    "subcategorySlug": "team-messaging",
+    "companySlug": null,
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android",
+      "Linux"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Cross-Platform",
+      "Mobile App"
+    ],
+    "features": [
+      "Server/channel-based chat",
+      "Voice and video channels",
+      "Bots and integrations",
+      "Screen sharing"
+    ],
+    "pros": [
+      "Low-latency voice chat",
+      "Strong bot/integration ecosystem for communities"
+    ],
+    "cons": [
+      "Not purpose-built for formal business workflows"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Loom",
+    "slug": "loom",
+    "tagline": "Async video messaging tool",
+    "description": "Screen and webcam recording tool for creating quick shareable videos instead of meetings or long messages.",
+    "websiteUrl": "https://loom.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "video",
+    "subcategorySlug": "screen-recording",
+    "companySlug": "loom",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Mobile App"
+    ],
+    "features": [
+      "Screen + webcam recording",
+      "Instant shareable links",
+      "Viewer engagement insights",
+      "AI-generated summaries"
+    ],
+    "pros": [
+      "Very fast to record and share",
+      "Reduces need for synchronous meetings"
+    ],
+    "cons": [
+      "Free tier limits video length/library size"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Descript",
+    "slug": "descript",
+    "tagline": "Transcript-based audio/video editor",
+    "description": "Audio and video editor that lets you edit recordings by editing the auto-generated transcript.",
+    "websiteUrl": "https://descript.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "video",
+    "subcategorySlug": "video-editing",
+    "companySlug": "descript",
+    "platformSlugs": [
+      "Windows",
+      "macOS"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "AI-Powered"
+    ],
+    "features": [
+      "Edit video/audio by editing text",
+      "AI voice cloning (Overdub)",
+      "Filler word removal",
+      "Screen recording"
+    ],
+    "pros": [
+      "Editing by transcript is dramatically faster for talking-head content"
+    ],
+    "cons": [
+      "Desktop-only, no browser or mobile editing"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Zendesk",
+    "slug": "zendesk",
+    "tagline": "Customer service platform",
+    "description": "Customer support ticketing and helpdesk platform for managing customer inquiries across channels.",
+    "websiteUrl": "https://zendesk.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "customer-support",
+    "subcategorySlug": null,
+    "companySlug": "zendesk",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Enterprise Ready",
+      "Mobile App"
+    ],
+    "features": [
+      "Ticketing system",
+      "Multi-channel support inbox",
+      "Knowledge base tooling",
+      "Automation and macros"
+    ],
+    "pros": [
+      "Mature, well-documented platform for support teams"
+    ],
+    "cons": [
+      "No free tier for the core ticketing product"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Intercom",
+    "slug": "intercom",
+    "tagline": "Customer messaging platform",
+    "description": "Customer messaging platform combining live chat, helpdesk, and product tours.",
+    "websiteUrl": "https://intercom.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "customer-support",
+    "subcategorySlug": "live-chat",
+    "companySlug": "intercom",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Mobile App"
+    ],
+    "features": [
+      "Live chat widget",
+      "Helpdesk ticketing",
+      "In-app product tours",
+      "AI-assisted support (Fin)"
+    ],
+    "pros": [
+      "Chat widget and helpdesk are tightly integrated"
+    ],
+    "cons": [
+      "Pricing can be less predictable, historically usage-based add-ons"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Zapier",
+    "slug": "zapier",
+    "tagline": "No-code automation platform",
+    "description": "Automation platform that connects apps together to move data and trigger actions without code.",
+    "websiteUrl": "https://zapier.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "automation",
+    "subcategorySlug": null,
+    "companySlug": "zapier",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Google Drive",
+      "HubSpot"
+    ],
+    "tagSlugs": [
+      "No-Code"
+    ],
+    "features": [
+      "Multi-step automated workflows (Zaps)",
+      "Thousands of supported app integrations",
+      "Conditional logic paths"
+    ],
+    "pros": [
+      "Extremely broad app integration library",
+      "No-code, approachable for non-developers"
+    ],
+    "cons": [
+      "Costs scale with number of tasks run per month"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Webflow",
+    "slug": "webflow",
+    "tagline": "Visual website builder",
+    "description": "No-code website builder that generates production-quality HTML/CSS, including a built-in CMS and hosting.",
+    "websiteUrl": "https://webflow.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "no-code",
+    "subcategorySlug": "website-builders",
+    "companySlug": "webflow",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "No-Code"
+    ],
+    "features": [
+      "Visual, pixel-precise design canvas",
+      "Built-in CMS for dynamic content",
+      "Hosting included",
+      "Interactions/animations"
+    ],
+    "pros": [
+      "Produces genuinely clean, semantic markup unlike many builders",
+      "CMS is flexible for content-driven sites"
+    ],
+    "cons": [
+      "Steeper learning curve than simpler drag-and-drop builders"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Airtable",
+    "slug": "airtable",
+    "tagline": "Spreadsheet-database hybrid",
+    "description": "Flexible spreadsheet-database hybrid for organizing data and building lightweight internal tools/workflows.",
+    "websiteUrl": "https://airtable.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "no-code",
+    "subcategorySlug": null,
+    "companySlug": "airtable",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack",
+      "Google Drive"
+    ],
+    "tagSlugs": [
+      "No-Code",
+      "Mobile App"
+    ],
+    "features": [
+      "Spreadsheet-database hybrid views",
+      "Automations",
+      "Forms for data collection",
+      "Multiple view types (grid, kanban, calendar)"
+    ],
+    "pros": [
+      "Flexible enough to model many kinds of internal workflows"
+    ],
+    "cons": [
+      "Record limits on lower-tier plans"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Bitwarden",
+    "slug": "bitwarden",
+    "tagline": "Open-source password manager",
+    "description": "Open-source password manager for storing and syncing credentials across devices.",
+    "websiteUrl": "https://bitwarden.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "security",
+    "subcategorySlug": "password-managers",
+    "companySlug": "bitwarden",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Open Source",
+      "Self-Hostable",
+      "Cross-Platform"
+    ],
+    "features": [
+      "Password vault with sync",
+      "Browser extensions",
+      "Self-hosting option",
+      "Password generator"
+    ],
+    "pros": [
+      "Genuinely open source, including a self-hosting option",
+      "Free tier covers core password management"
+    ],
+    "cons": [
+      "Interface is less polished than some paid competitors"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "1Password",
+    "slug": "1password",
+    "tagline": "Password manager and secrets vault",
+    "description": "Password manager for individuals and teams, also used for secrets management in development workflows.",
+    "websiteUrl": "https://1password.com",
+    "pricingModel": "SUBSCRIPTION",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "security",
+    "subcategorySlug": "password-managers",
+    "companySlug": "1password",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Cross-Platform"
+    ],
+    "features": [
+      "Password vault with sync",
+      "Secure document storage",
+      "Developer secrets/CLI tooling",
+      "Travel Mode"
+    ],
+    "pros": [
+      "Polished apps across every major platform",
+      "Strong secrets-management features for developers"
+    ],
+    "cons": [
+      "No permanently free individual tier (trial only)"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "NordVPN",
+    "slug": "nordvpn",
+    "tagline": "Consumer VPN service",
+    "description": "Virtual private network service for encrypting internet traffic and masking IP address.",
+    "websiteUrl": "https://nordvpn.com",
+    "pricingModel": "SUBSCRIPTION",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "security",
+    "subcategorySlug": "vpn",
+    "companySlug": "nordvpn",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Cross-Platform"
+    ],
+    "features": [
+      "Encrypted VPN tunnel",
+      "Large server network across many countries",
+      "Kill switch",
+      "Threat protection features"
+    ],
+    "pros": [
+      "Large server network",
+      "Consistently fast for a consumer VPN"
+    ],
+    "cons": [
+      "No free tier"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Dropbox",
+    "slug": "dropbox",
+    "tagline": "Cloud file storage and sync",
+    "description": "Cloud file storage service for syncing and sharing files across devices and teams.",
+    "websiteUrl": "https://dropbox.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "productivity",
+    "subcategorySlug": null,
+    "companySlug": "dropbox",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "Linux",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Slack"
+    ],
+    "tagSlugs": [
+      "Cross-Platform",
+      "Mobile App"
+    ],
+    "features": [
+      "File sync across devices",
+      "File sharing and link permissions",
+      "Version history",
+      "Smart Sync (selective offline files)"
+    ],
+    "pros": [
+      "Mature, reliable sync engine",
+      "Broad third-party app integrations"
+    ],
+    "cons": [
+      "Free tier storage is limited"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Google Drive",
+    "slug": "google-drive",
+    "tagline": "Cloud storage and office suite",
+    "description": "Cloud file storage bundled with Google Docs, Sheets, and Slides for collaborative document editing.",
+    "websiteUrl": "https://drive.google.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "productivity",
+    "subcategorySlug": null,
+    "companySlug": "google",
+    "platformSlugs": [
+      "Web",
+      "Windows",
+      "macOS",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [
+      "Google Calendar"
+    ],
+    "tagSlugs": [
+      "Real-Time Collaboration",
+      "Mobile App"
+    ],
+    "features": [
+      "Cloud file storage",
+      "Real-time collaborative Docs/Sheets/Slides",
+      "Shared drives for teams"
+    ],
+    "pros": [
+      "Real-time multi-user document editing",
+      "Deep integration with the rest of Google Workspace"
+    ],
+    "cons": [
+      "Storage is shared across Gmail and Photos on the free tier"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Duolingo",
+    "slug": "duolingo",
+    "tagline": "Gamified language learning app",
+    "description": "Mobile-first language learning app using gamification, streaks, and bite-sized lessons.",
+    "websiteUrl": "https://duolingo.com",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "education",
+    "subcategorySlug": null,
+    "companySlug": "duolingo",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Mobile App",
+      "Beginner Friendly"
+    ],
+    "features": [
+      "Bite-sized gamified lessons",
+      "Streak and XP system",
+      "Speaking and listening exercises"
+    ],
+    "pros": [
+      "Free tier is fully functional, ad-supported",
+      "Strong habit-forming gamification"
+    ],
+    "cons": [
+      "Depth of instruction is lighter than structured courses/tutoring"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Coursera",
+    "slug": "coursera",
+    "tagline": "Online course platform",
+    "description": "Online learning platform offering courses and degrees from universities and companies.",
+    "websiteUrl": "https://coursera.org",
+    "pricingModel": "FREEMIUM",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "education",
+    "subcategorySlug": null,
+    "companySlug": "coursera",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Mobile App"
+    ],
+    "features": [
+      "University and industry-partnered courses",
+      "Certificates and specializations",
+      "Some free audit-only courses"
+    ],
+    "pros": [
+      "Content from recognized universities/companies",
+      "Structured certificate tracks"
+    ],
+    "cons": [
+      "Most valuable content and certificates require payment"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "Stripe",
+    "slug": "stripe",
+    "tagline": "Online payment processing",
+    "description": "Payment processing infrastructure for accepting online payments and managing billing.",
+    "websiteUrl": "https://stripe.com",
+    "pricingModel": "PAID",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "finance",
+    "subcategorySlug": null,
+    "companySlug": "stripe",
+    "platformSlugs": [
+      "Web"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "API Available",
+      "Enterprise Ready"
+    ],
+    "features": [
+      "Online payment processing",
+      "Subscription billing",
+      "Developer-first API and SDKs",
+      "Fraud detection tooling"
+    ],
+    "pros": [
+      "Developer experience and documentation are widely regarded as excellent"
+    ],
+    "cons": [
+      "Pricing is transaction-fee based rather than a flat subscription, which can be harder to predict at scale"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "QuickBooks Online",
+    "slug": "quickbooks-online",
+    "tagline": "Small business accounting software",
+    "description": "Cloud accounting software for invoicing, expense tracking, and bookkeeping for small businesses.",
+    "websiteUrl": "https://quickbooks.intuit.com",
+    "pricingModel": "SUBSCRIPTION",
+    "startingPrice": null,
+    "currency": null,
+    "categorySlug": "finance",
+    "subcategorySlug": null,
+    "companySlug": "intuit-quickbooks",
+    "platformSlugs": [
+      "Web",
+      "iOS",
+      "Android"
+    ],
+    "integrationSlugs": [],
+    "tagSlugs": [
+      "Mobile App"
+    ],
+    "features": [
+      "Invoicing",
+      "Expense tracking",
+      "Bank reconciliation",
+      "Payroll add-on"
+    ],
+    "pros": [
+      "Widely used, familiar to most accountants/bookkeepers"
+    ],
+    "cons": [
+      "No free tier beyond a trial"
+    ],
+    "faqs": [],
+    "isFeatured": false,
+    "status": "PUBLISHED",
+    "verificationStatus": "UNVERIFIED",
+    "sourceUrl": null,
+    "sourceType": null
+  }
+]

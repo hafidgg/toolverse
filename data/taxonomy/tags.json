@@ -1,0 +1,22 @@
+[
+  { "name": "AI-Powered", "slug": "ai-powered" },
+  { "name": "Open Source", "slug": "open-source" },
+  { "name": "Beginner Friendly", "slug": "beginner-friendly" },
+  { "name": "Enterprise Ready", "slug": "enterprise-ready" },
+  { "name": "Self-Hostable", "slug": "self-hostable" },
+  { "name": "Chrome Extension", "slug": "chrome-extension" },
+  { "name": "API Available", "slug": "api-available" },
+  { "name": "Real-Time Collaboration", "slug": "real-time-collaboration" },
+  { "name": "Mobile App", "slug": "mobile-app" },
+  { "name": "Browser-Based", "slug": "browser-based" },
+  { "name": "Team Collaboration", "slug": "team-collaboration" },
+  { "name": "Startup Friendly", "slug": "startup-friendly" },
+  { "name": "GDPR Compliant", "slug": "gdpr-compliant" },
+  { "name": "SOC 2", "slug": "soc-2" },
+  { "name": "Freemium", "slug": "freemium" },
+  { "name": "No-Code", "slug": "no-code" },
+  { "name": "Cross-Platform", "slug": "cross-platform" },
+  { "name": "Offline Support", "slug": "offline-support" },
+  { "name": "Dark Mode", "slug": "dark-mode" },
+  { "name": "Templates", "slug": "templates" }
+]

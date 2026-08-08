@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { seedContent } from "./content";
 
 const prisma = new PrismaClient();
 
@@ -28,28 +29,9 @@ async function main() {
     },
   });
 
-  const platforms = ["Web", "iOS", "Android", "Windows", "macOS", "Linux", "API"];
-  for (const name of platforms) {
-    await prisma.platform.upsert({
-      where: { name },
-      update: {},
-      create: { name, slug: name.toLowerCase() },
-    });
-  }
-
-  const category = await prisma.category.upsert({
-    where: { slug: "ai-tools" },
-    update: {},
-    create: {
-      name: "AI Tools",
-      slug: "ai-tools",
-      description: "Artificial intelligence powered tools and platforms.",
-      isFeatured: true,
-    },
-  });
-
-  console.log("Seed complete. Category:", category.slug);
   console.log("Admin login: admin@toolverse.local / ChangeMe123! (change immediately)");
+
+  await seedContent();
 }
 
 main()

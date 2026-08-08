@@ -12,6 +12,10 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed/index.ts",
+    "seed": "tsx prisma/seed/index.ts",
+    "seed:content": "tsx prisma/seed/content.ts",
+    "validate-content": "tsx scripts/validate-content.ts",
+    "content-audit": "tsx scripts/content-audit.ts",
     "prisma:studio": "prisma studio",
     "test": "vitest",
     "test:e2e": "playwright test"
