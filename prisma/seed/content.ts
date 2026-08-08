@@ -3,7 +3,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 const prisma = new PrismaClient();
-const DATA_DIR = path.join(__dirname, "..", "..", "data");
+// process.cwd() is the project root in both local dev and Vercel's Node.js
+// serverless runtime (/var/task) — reliable there. __dirname-based relative
+// traversal (e.g. path.join(__dirname, "..", "..", "data")) is NOT safe here:
+// Next.js bundles this file for the API route, which can flatten/relocate
+// it relative to its original source position, so __dirname at runtime
+// doesn't necessarily match the source tree layout.
+const DATA_DIR = path.join(process.cwd(), "data");
 
 function readJson<T>(relativePath: string): T {
   const filePath = path.join(DATA_DIR, relativePath);
