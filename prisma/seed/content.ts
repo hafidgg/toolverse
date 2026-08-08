@@ -310,7 +310,7 @@ async function upsertTools() {
     }
 
     for (const tagName of t.tagSlugs) {
-      const tag = await prisma.tag.findUnique({ where: { name: tagName } });
+      const tag = await prisma.tag.findFirst({ where: { name: tagName } });
       if (tag) {
         await prisma.toolTag.create({ data: { toolId: tool.id, tagId: tag.id } }).catch(() => {});
       }
