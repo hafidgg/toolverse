@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { seedContent } from "@/prisma/seed/content";
 
 // TEMPORARY route: runs the full content seed (taxonomy, companies, tools,
@@ -19,6 +20,18 @@ export async function GET(req: NextRequest) {
 
   try {
     await seedContent();
+
+    // These public listing pages use ISR (revalidate = 1800/3600s) and were
+    // first statically rendered before this seed ran, against an empty
+    // database — without this, they'd keep serving that empty snapshot
+    // until their revalidate window naturally elapses.
+    revalidatePath("/");
+    revalidatePath("/tools");
+    revalidatePath("/categories");
+    revalidatePath("/companies");
+    revalidatePath("/collections");
+    revalidateTag("tools");
+
     return NextResponse.json({ success: true, message: "Content seed complete." });
   } catch (error) {
     return NextResponse.json(
