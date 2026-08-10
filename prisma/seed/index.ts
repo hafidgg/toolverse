@@ -31,7 +31,17 @@ async function main() {
 
   console.log("Admin login: admin@toolverse.local / ChangeMe123! (change immediately)");
 
-  await seedContent();
+  const summary = await seedContent();
+  console.log("\nSUMMARY");
+  console.log(`Categories: ${summary.categories}`);
+  console.log(`Subcategories: ${summary.subcategories}`);
+  console.log(`Companies: ${summary.companies}`);
+  console.log(`Tools: ${summary.tools.upserted} upserted, ${summary.tools.skipped.length} skipped`);
+  if (summary.tools.skipped.length > 0) {
+    console.log("Skipped tools:");
+    for (const s of summary.tools.skipped) console.log(`  - ${s.slug} → ${s.reason}`);
+  }
+  console.log(`Collections: ${summary.collections}`);
 }
 
 main()

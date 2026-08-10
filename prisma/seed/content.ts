@@ -125,10 +125,12 @@ async function upsertTaxonomy() {
   }
 
   const subcategories = readJson<SubcategoryData[]>("taxonomy/subcategories.json");
+  let subcategorySkipped = 0;
   for (const s of subcategories) {
     const category = await prisma.category.findUnique({ where: { slug: s.categorySlug } });
     if (!category) {
       console.warn(`  ⚠ Skipping subcategory "${s.slug}": category "${s.categorySlug}" not found`);
+      subcategorySkipped++;
       continue;
     }
     await prisma.subcategory.upsert({
@@ -144,8 +146,16 @@ async function upsertTaxonomy() {
   }
 
   console.log(
-    `  Taxonomy: ${platforms.length} platforms, ${integrations.length} integrations, ${categories.length} categories, ${subcategories.length} subcategories, ${tags.length} tags`
+    `  Taxonomy: ${platforms.length} platforms, ${integrations.length} integrations, ${categories.length} categories, ${subcategories.length - subcategorySkipped}/${subcategories.length} subcategories, ${tags.length} tags`
   );
+
+  return {
+    platforms: platforms.length,
+    integrations: integrations.length,
+    categories: categories.length,
+    subcategories: subcategories.length - subcategorySkipped,
+    tags: tags.length,
+  };
 }
 
 async function upsertCompanies() {
@@ -190,51 +200,80 @@ async function upsertCompanies() {
   }
 
   console.log(`  Companies: ${companies.length}`);
+  return { companies: companies.length };
 }
 
-async function upsertTools() {
+async function upsertTools(): Promise<{
+  input: number;
+  upserted: number;
+  skipped: { slug: string; reason: string }[];
+}> {
   const tools = readJson<ToolData[]>("tools/tools.json");
-  let skipped = 0;
+  const skipped: { slug: string; reason: string }[] = [];
+  let upserted = 0;
+
+  // Precompute lookup maps once instead of re-querying per tool — this is
+  // the main fix for the production issue where the tools phase was
+  // dramatically slower than the companies phase (which does far fewer
+  // round trips per record): each tool previously did up to ~15-20
+  // sequential DB round trips (category/subcategory/company/existing-tool
+  // lookups, then an individual findUnique+create per tag/platform/
+  // integration). Against a remote Postgres instance, that easily pushed
+  // total execution past a serverless function's time budget, silently
+  // truncating the run after however many tools fit in the window — with
+  // no error, since the process is killed from outside, not thrown from
+  // within. Companies fully completed because that phase does far less
+  // per-record work.
+  const [allCategories, allSubcategories, allCompanies, allTags, allPlatforms, allIntegrations] =
+    await Promise.all([
+      prisma.category.findMany({ select: { id: true, slug: true } }),
+      prisma.subcategory.findMany({ select: { id: true, slug: true } }),
+      prisma.company.findMany({ select: { id: true, slug: true } }),
+      prisma.tag.findMany({ select: { id: true, name: true } }),
+      prisma.platform.findMany({ select: { id: true, name: true } }),
+      prisma.integration.findMany({ select: { id: true, name: true } }),
+    ]);
+  const categoryBySlug = new Map(allCategories.map((c) => [c.slug, c.id]));
+  const subcategoryBySlug = new Map(allSubcategories.map((s) => [s.slug, s.id]));
+  const companyBySlug = new Map(allCompanies.map((c) => [c.slug, c.id]));
+  const tagByName = new Map(allTags.map((t) => [t.name, t.id]));
+  const platformByName = new Map(allPlatforms.map((p) => [p.name, p.id]));
+  const integrationByName = new Map(allIntegrations.map((i) => [i.name, i.id]));
 
   for (const t of tools) {
-    const category = await prisma.category.findUnique({ where: { slug: t.categorySlug } });
-    if (!category) {
-      console.warn(`  ⚠ Skipping tool "${t.slug}": category "${t.categorySlug}" not found`);
-      skipped++;
-      continue;
-    }
+    try {
+      const categoryId = categoryBySlug.get(t.categorySlug);
+      if (!categoryId) {
+        skipped.push({ slug: t.slug, reason: `category "${t.categorySlug}" not found` });
+        continue;
+      }
+      if (t.subcategorySlug && !subcategoryBySlug.has(t.subcategorySlug)) {
+        skipped.push({ slug: t.slug, reason: `subcategory "${t.subcategorySlug}" not found` });
+        continue;
+      }
+      if (t.companySlug && !companyBySlug.has(t.companySlug)) {
+        skipped.push({ slug: t.slug, reason: `company "${t.companySlug}" not found` });
+        continue;
+      }
 
-    const subcategory = t.subcategorySlug
-      ? await prisma.subcategory.findUnique({ where: { slug: t.subcategorySlug } })
-      : null;
-    const company = t.companySlug
-      ? await prisma.company.findUnique({ where: { slug: t.companySlug } })
-      : null;
+      const subcategoryId = t.subcategorySlug ? subcategoryBySlug.get(t.subcategorySlug) : undefined;
+      const companyId = t.companySlug ? companyBySlug.get(t.companySlug) : undefined;
 
-    const existing = await prisma.tool.findUnique({ where: { slug: t.slug } });
+      const existing = await prisma.tool.findUnique({ where: { slug: t.slug } });
 
-    // SEO: create/update the Seo row first, then assign its id as a scalar
-    // FK on the Tool write below. Passing categoryId/companyId as scalars
-    // (which we do, since bulk upsert needs stable slug-keyed lookups, not
-    // Prisma's nested-connect "Checked" style) forces the Tool write into
-    // the "Unchecked" input variant — mixing that with a nested `seo: {
-    // create }` write is exactly the type error fixed earlier in this
-    // project's deployment (see docs/content-seeding-audit.md).
-    const seoData = {
-      metaTitle: truncate(`${t.name} — ${t.tagline}`, 70),
-      metaDescription: truncate(t.description, 160),
-    };
-    let seoId = existing?.seoId ?? undefined;
-    if (seoId) {
-      await prisma.seo.update({ where: { id: seoId }, data: seoData });
-    } else {
-      const seo = await prisma.seo.create({ data: seoData });
-      seoId = seo.id;
-    }
+      const seoData = {
+        metaTitle: truncate(`${t.name} — ${t.tagline}`, 70),
+        metaDescription: truncate(t.description, 160),
+      };
+      let seoId = existing?.seoId ?? undefined;
+      if (seoId) {
+        await prisma.seo.update({ where: { id: seoId }, data: seoData });
+      } else {
+        const seo = await prisma.seo.create({ data: seoData });
+        seoId = seo.id;
+      }
 
-    const tool = await prisma.tool.upsert({
-      where: { slug: t.slug },
-      update: {
+      const commonData = {
         name: t.name,
         tagline: t.tagline,
         description: t.description,
@@ -244,102 +283,129 @@ async function upsertTools() {
         currency: t.currency,
         status: t.status,
         isFeatured: t.isFeatured,
-        publishedAt: t.status === "PUBLISHED" ? (existing?.publishedAt ?? new Date()) : null,
-        categoryId: category.id,
-        subcategoryId: subcategory?.id ?? null,
-        companyId: company?.id ?? null,
+        categoryId,
+        subcategoryId: subcategoryId ?? null,
+        companyId: companyId ?? null,
         sourceUrl: t.sourceUrl,
         sourceType: t.sourceType,
         verificationStatus: t.verificationStatus,
         lastVerifiedAt: t.verificationStatus === "SOURCE_CHECKED" ? new Date() : null,
         seoId,
-      },
-      create: {
-        name: t.name,
+      };
+
+      const tool = await prisma.tool.upsert({
+        where: { slug: t.slug },
+        update: {
+          ...commonData,
+          publishedAt: t.status === "PUBLISHED" ? (existing?.publishedAt ?? new Date()) : null,
+        },
+        create: {
+          ...commonData,
+          slug: t.slug,
+          publishedAt: t.status === "PUBLISHED" ? new Date() : null,
+        },
+      });
+
+      // Idempotent child rows: delete-then-recreate rather than diffing,
+      // since these have no natural unique key per item to upsert on.
+      // Batched into one transaction (unchanged) plus batched createMany
+      // calls below (changed from individual per-item create+catch loops).
+      await prisma.$transaction([
+        prisma.toolFeature.deleteMany({ where: { toolId: tool.id } }),
+        prisma.toolPro.deleteMany({ where: { toolId: tool.id } }),
+        prisma.toolCon.deleteMany({ where: { toolId: tool.id } }),
+        prisma.fAQ.deleteMany({ where: { toolId: tool.id } }),
+        prisma.toolTag.deleteMany({ where: { toolId: tool.id } }),
+        prisma.toolPlatform.deleteMany({ where: { toolId: tool.id } }),
+        prisma.toolIntegration.deleteMany({ where: { toolId: tool.id } }),
+      ]);
+
+      const writes: Promise<unknown>[] = [];
+      if (t.features.length) {
+        writes.push(
+          prisma.toolFeature.createMany({
+            data: t.features.map((title, order) => ({ toolId: tool.id, title, order })),
+          })
+        );
+      }
+      if (t.pros.length) {
+        writes.push(
+          prisma.toolPro.createMany({
+            data: t.pros.map((text, order) => ({ toolId: tool.id, text, order })),
+          })
+        );
+      }
+      if (t.cons.length) {
+        writes.push(
+          prisma.toolCon.createMany({
+            data: t.cons.map((text, order) => ({ toolId: tool.id, text, order })),
+          })
+        );
+      }
+      if (t.faqs.length) {
+        writes.push(
+          prisma.fAQ.createMany({
+            data: t.faqs.map((faq, order) => ({
+              toolId: tool.id,
+              question: faq.q,
+              answer: faq.a,
+              order,
+            })),
+          })
+        );
+      }
+
+      const tagIds = t.tagSlugs.map((n) => tagByName.get(n)).filter((id): id is string => !!id);
+      if (tagIds.length) {
+        writes.push(
+          prisma.toolTag.createMany({
+            data: tagIds.map((tagId) => ({ toolId: tool.id, tagId })),
+            skipDuplicates: true,
+          })
+        );
+      }
+      const platformIds = t.platformSlugs
+        .map((n) => platformByName.get(n))
+        .filter((id): id is string => !!id);
+      if (platformIds.length) {
+        writes.push(
+          prisma.toolPlatform.createMany({
+            data: platformIds.map((platformId) => ({ toolId: tool.id, platformId })),
+            skipDuplicates: true,
+          })
+        );
+      }
+      const integrationIds = t.integrationSlugs
+        .map((n) => integrationByName.get(n))
+        .filter((id): id is string => !!id);
+      if (integrationIds.length) {
+        writes.push(
+          prisma.toolIntegration.createMany({
+            data: integrationIds.map((integrationId) => ({ toolId: tool.id, integrationId })),
+            skipDuplicates: true,
+          })
+        );
+      }
+
+      await Promise.all(writes);
+      upserted++;
+    } catch (error) {
+      skipped.push({
         slug: t.slug,
-        tagline: t.tagline,
-        description: t.description,
-        websiteUrl: t.websiteUrl,
-        pricingModel: t.pricingModel,
-        startingPrice: t.startingPrice,
-        currency: t.currency,
-        status: t.status,
-        isFeatured: t.isFeatured,
-        publishedAt: t.status === "PUBLISHED" ? new Date() : null,
-        categoryId: category.id,
-        subcategoryId: subcategory?.id ?? null,
-        companyId: company?.id ?? null,
-        sourceUrl: t.sourceUrl,
-        sourceType: t.sourceType,
-        verificationStatus: t.verificationStatus,
-        lastVerifiedAt: t.verificationStatus === "SOURCE_CHECKED" ? new Date() : null,
-        seoId,
-      },
-    });
-
-    // Idempotent child rows: delete-then-recreate rather than trying to
-    // diff, since these have no natural unique key per item to upsert on.
-    await prisma.$transaction([
-      prisma.toolFeature.deleteMany({ where: { toolId: tool.id } }),
-      prisma.toolPro.deleteMany({ where: { toolId: tool.id } }),
-      prisma.toolCon.deleteMany({ where: { toolId: tool.id } }),
-      prisma.fAQ.deleteMany({ where: { toolId: tool.id } }),
-      prisma.toolTag.deleteMany({ where: { toolId: tool.id } }),
-      prisma.toolPlatform.deleteMany({ where: { toolId: tool.id } }),
-      prisma.toolIntegration.deleteMany({ where: { toolId: tool.id } }),
-    ]);
-
-    if (t.features.length) {
-      await prisma.toolFeature.createMany({
-        data: t.features.map((title, order) => ({ toolId: tool.id, title, order })),
+        reason: error instanceof Error ? error.message : String(error),
       });
-    }
-    if (t.pros.length) {
-      await prisma.toolPro.createMany({
-        data: t.pros.map((text, order) => ({ toolId: tool.id, text, order })),
-      });
-    }
-    if (t.cons.length) {
-      await prisma.toolCon.createMany({
-        data: t.cons.map((text, order) => ({ toolId: tool.id, text, order })),
-      });
-    }
-    if (t.faqs.length) {
-      await prisma.fAQ.createMany({
-        data: t.faqs.map((faq, order) => ({
-          toolId: tool.id,
-          question: faq.q,
-          answer: faq.a,
-          order,
-        })),
-      });
-    }
-
-    for (const tagName of t.tagSlugs) {
-      const tag = await prisma.tag.findFirst({ where: { name: tagName } });
-      if (tag) {
-        await prisma.toolTag.create({ data: { toolId: tool.id, tagId: tag.id } }).catch(() => {});
-      }
-    }
-    for (const platformName of t.platformSlugs) {
-      const platform = await prisma.platform.findUnique({ where: { name: platformName } });
-      if (platform) {
-        await prisma.toolPlatform
-          .create({ data: { toolId: tool.id, platformId: platform.id } })
-          .catch(() => {});
-      }
-    }
-    for (const integrationName of t.integrationSlugs) {
-      const integration = await prisma.integration.findUnique({ where: { name: integrationName } });
-      if (integration) {
-        await prisma.toolIntegration
-          .create({ data: { toolId: tool.id, integrationId: integration.id } })
-          .catch(() => {});
-      }
     }
   }
 
-  console.log(`  Tools: ${tools.length - skipped} upserted, ${skipped} skipped (missing category)`);
+  console.log(`  Tools: ${upserted} upserted, ${skipped.length} skipped`);
+  if (skipped.length > 0) {
+    console.log("  Skipped tools:");
+    for (const s of skipped) console.log(`    - ${s.slug} → ${s.reason}`);
+  } else {
+    console.log("  Skipped tools: none");
+  }
+
+  return { input: tools.length, upserted, skipped };
 }
 
 async function upsertCollections() {
@@ -388,20 +454,49 @@ async function upsertCollections() {
   }
 
   console.log(`  Collections: ${collections.length} (${skippedTools} tool refs skipped/missing)`);
+  return { collections: collections.length, skippedToolRefs: skippedTools };
 }
 
-export async function seedContent() {
+export interface SeedSummary {
+  categories: number;
+  subcategories: number;
+  companies: number;
+  tools: { input: number; upserted: number; skipped: { slug: string; reason: string }[] };
+  collections: number;
+}
+
+export async function seedContent(): Promise<SeedSummary> {
   console.log("Seeding content from data/ …");
-  await upsertTaxonomy();
-  await upsertCompanies();
-  await upsertTools();
-  await upsertCollections();
+  const taxonomy = await upsertTaxonomy();
+  const companies = await upsertCompanies();
+  const tools = await upsertTools();
+  const collections = await upsertCollections();
   console.log("Content seeding complete.");
+
+  return {
+    categories: taxonomy.categories,
+    subcategories: taxonomy.subcategories,
+    companies: companies.companies,
+    tools,
+    collections: collections.collections,
+  };
 }
 
 // Allow running this file directly: `tsx prisma/seed/content.ts`
 if (require.main === module) {
   seedContent()
+    .then((summary) => {
+      console.log("\nSUMMARY");
+      console.log(`Categories: ${summary.categories}`);
+      console.log(`Subcategories: ${summary.subcategories}`);
+      console.log(`Companies: ${summary.companies}`);
+      console.log(`Tools: ${summary.tools.upserted} upserted, ${summary.tools.skipped.length} skipped`);
+      if (summary.tools.skipped.length > 0) {
+        console.log("Skipped tools:");
+        for (const s of summary.tools.skipped) console.log(`  - ${s.slug} → ${s.reason}`);
+      }
+      console.log(`Collections: ${summary.collections}`);
+    })
     .catch((e) => {
       console.error(e);
       process.exit(1);
