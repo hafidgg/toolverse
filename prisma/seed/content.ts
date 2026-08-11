@@ -203,12 +203,20 @@ async function upsertCompanies() {
   return { companies: companies.length };
 }
 
-async function upsertTools(): Promise<{
+async function upsertTools(
+  offset = 0,
+  limit?: number
+): Promise<{
   input: number;
+  totalInDataset: number;
   upserted: number;
   skipped: { slug: string; reason: string }[];
+  nextOffset: number | null;
 }> {
-  const tools = readJson<ToolData[]>("tools/tools.json");
+  const allTools = readJson<ToolData[]>("tools/tools.json");
+  const tools = limit ? allTools.slice(offset, offset + limit) : allTools.slice(offset);
+  const nextOffset = limit && offset + limit < allTools.length ? offset + limit : null;
+
   const skipped: { slug: string; reason: string }[] = [];
   let upserted = 0;
 
@@ -224,6 +232,14 @@ async function upsertTools(): Promise<{
   // no error, since the process is killed from outside, not thrown from
   // within. Companies fully completed because that phase does far less
   // per-record work.
+  //
+  // Batching (offset/limit) is a second, independent layer of defense on
+  // top of that: Vercel's Hobby plan enforces a hard ~10s serverless
+  // function timeout that a route's own `maxDuration` cannot override
+  // (that only takes effect on paid plans) — so even the optimized
+  // per-tool cost can still add up past 10s across all 57 tools in one
+  // request. Processing a bounded slice per invocation keeps each call
+  // comfortably short regardless of plan.
   const [allCategories, allSubcategories, allCompanies, allTags, allPlatforms, allIntegrations] =
     await Promise.all([
       prisma.category.findMany({ select: { id: true, slug: true } }),
@@ -405,7 +421,7 @@ async function upsertTools(): Promise<{
     console.log("  Skipped tools: none");
   }
 
-  return { input: tools.length, upserted, skipped };
+  return { input: tools.length, totalInDataset: allTools.length, upserted, skipped, nextOffset };
 }
 
 async function upsertCollections() {
@@ -461,10 +477,23 @@ export interface SeedSummary {
   categories: number;
   subcategories: number;
   companies: number;
-  tools: { input: number; upserted: number; skipped: { slug: string; reason: string }[] };
+  tools: {
+    input: number;
+    totalInDataset: number;
+    upserted: number;
+    skipped: { slug: string; reason: string }[];
+    nextOffset: number | null;
+  };
   collections: number;
 }
 
+/**
+ * Full, unbatched seed — taxonomy, companies, every tool in one pass, then
+ * collections. Fine for local `npm run seed` (no serverless timeout to
+ * worry about). On Vercel, prefer calling `seedTaxonomyAndCompanies()` once
+ * followed by repeated `seedToolsBatch()` calls, then `seedCollections()` —
+ * see app/api/admin/seed-content-once/route.ts.
+ */
 export async function seedContent(): Promise<SeedSummary> {
   console.log("Seeding content from data/ …");
   const taxonomy = await upsertTaxonomy();
@@ -480,6 +509,28 @@ export async function seedContent(): Promise<SeedSummary> {
     tools,
     collections: collections.collections,
   };
+}
+
+/** Taxonomy + companies only — fast, safe to run in a single short request. */
+export async function seedTaxonomyAndCompanies() {
+  const taxonomy = await upsertTaxonomy();
+  const companies = await upsertCompanies();
+  return { taxonomy, companies };
+}
+
+/**
+ * Processes one bounded slice of tools.json, starting at `offset`. Returns
+ * `nextOffset: null` once the dataset is exhausted. Designed to be called
+ * repeatedly from a route handler until done — each call stays well within
+ * even a 10-second serverless timeout regardless of hosting plan.
+ */
+export async function seedToolsBatch(offset: number, limit: number) {
+  return upsertTools(offset, limit);
+}
+
+/** Collections reference tools by slug — run this only after all tool batches are done. */
+export async function seedCollections() {
+  return upsertCollections();
 }
 
 // Allow running this file directly: `tsx prisma/seed/content.ts`
