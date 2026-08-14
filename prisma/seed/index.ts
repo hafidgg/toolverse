@@ -25,7 +25,7 @@ async function main() {
       id: "global",
       siteName: "ToolVerse",
       siteDescription: "Discover the best digital tools and online resources.",
-      siteUrl: "https://toolverse.example.com",
+      siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolverse-ecru.vercel.app",
     },
   });
 

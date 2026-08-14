@@ -12,6 +12,16 @@ import {
 } from "@/lib/seo/metadata";
 import { getToolBySlug, getAllPublishedToolSlugs } from "@/services/tool-service";
 
+const PRICING_LABELS: Record<string, string> = {
+  FREE: "Free",
+  FREEMIUM: "Freemium",
+  PAID: "Paid",
+  SUBSCRIPTION: "Subscription",
+  ONE_TIME: "One-time purchase",
+  OPEN_SOURCE: "Open Source",
+  CONTACT_SALES: "Contact Sales",
+};
+
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -103,6 +113,54 @@ export default async function ToolPage({
         </div>
       </header>
 
+      <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+        <span className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-medium">
+          {PRICING_LABELS[tool.pricingModel] ?? tool.pricingModel}
+          {tool.startingPrice != null && (
+            <span className="text-muted-foreground">
+              {" "}
+              — from {tool.currency ?? "USD"} {Number(tool.startingPrice).toFixed(0)}
+              {tool.pricingModel === "SUBSCRIPTION" || tool.pricingModel === "FREEMIUM" ? "/mo" : ""}
+            </span>
+          )}
+        </span>
+
+        {tool.company && (
+          <Link
+            href={`/company/${tool.company.slug}`}
+            className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground"
+          >
+            By <span className="font-medium text-foreground">{tool.company.name}</span>
+          </Link>
+        )}
+
+        <a
+          href={tool.websiteUrl}
+          target="_blank"
+          rel="noopener noreferrer nofollow sponsored"
+          className="text-muted-foreground hover:text-foreground"
+        >
+          {new URL(tool.websiteUrl).hostname.replace(/^www\./, "")} ↗
+        </a>
+      </div>
+
+      {(tool.platforms.length > 0 || tool.integrations.length > 0) && (
+        <div className="mt-4 flex flex-wrap gap-x-8 gap-y-3 text-sm">
+          {tool.platforms.length > 0 && (
+            <div>
+              <span className="font-medium text-muted-foreground">Platforms: </span>
+              {tool.platforms.map((p) => p.platform.name).join(", ")}
+            </div>
+          )}
+          {tool.integrations.length > 0 && (
+            <div>
+              <span className="font-medium text-muted-foreground">Integrations: </span>
+              {tool.integrations.map((i) => i.integration.name).join(", ")}
+            </div>
+          )}
+        </div>
+      )}
+
       <section className="mt-6 max-w-3xl">
         <p className="text-base leading-7">{tool.description}</p>
       </section>
@@ -140,6 +198,39 @@ export default async function ToolPage({
                 <li key={c.id}>- {c.text}</li>
               ))}
             </ul>
+          </div>
+        </section>
+      )}
+
+      {tool.pricingPlans.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Pricing Plans</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {tool.pricingPlans.map((plan) => (
+              <div
+                key={plan.id}
+                className={`rounded-lg border p-4 ${plan.isPopular ? "border-primary" : ""}`}
+              >
+                <p className="font-semibold">{plan.name}</p>
+                {plan.price != null && (
+                  <p className="mt-1 text-2xl font-bold">
+                    {plan.currency} {Number(plan.price).toFixed(0)}
+                    {plan.billingCycle && (
+                      <span className="text-sm font-normal text-muted-foreground">
+                        /{plan.billingCycle}
+                      </span>
+                    )}
+                  </p>
+                )}
+                {plan.features.length > 0 && (
+                  <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
+                    {plan.features.map((f, i) => (
+                      <li key={i}>• {f}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
         </section>
       )}

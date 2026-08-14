@@ -5,14 +5,26 @@ import { SITE_URL } from "@/lib/seo/metadata";
 export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [tools, categories, posts, collections] = await Promise.all([
+  const [tools, categoriesRaw, companiesRaw, posts, collectionsRaw] = await Promise.all([
     prisma.tool.findMany({
       where: { status: "PUBLISHED" },
       select: { slug: true, updatedAt: true },
     }),
     prisma.category.findMany({
       where: { isActive: true },
-      select: { slug: true, updatedAt: true },
+      select: {
+        slug: true,
+        updatedAt: true,
+        _count: { select: { tools: { where: { status: "PUBLISHED" } } } },
+      },
+    }),
+    prisma.company.findMany({
+      where: { isActive: true },
+      select: {
+        slug: true,
+        updatedAt: true,
+        _count: { select: { tools: { where: { status: "PUBLISHED" } } } },
+      },
     }),
     prisma.blogPost.findMany({
       where: { status: "PUBLISHED" },
@@ -20,9 +32,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
     prisma.collection.findMany({
       where: { isActive: true },
-      select: { slug: true, updatedAt: true },
+      include: { tools: { select: { toolId: true } } },
     }),
   ]);
+
+  // Thin/empty pages are noindexed on the page itself (see their
+  // generateMetadata) and excluded here too — no point asking Google to
+  // crawl a URL we've already told it not to index.
+  const categories = categoriesRaw.filter((c) => c._count.tools > 0);
+  const companies = companiesRaw.filter((c) => c._count.tools > 0);
+  const collections = collectionsRaw.filter((c) => c.tools.length > 0);
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, changeFrequency: "daily", priority: 1 },
@@ -30,12 +49,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/categories`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE_URL}/companies`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/collections`, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${SITE_URL}/blog`, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/search`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/compare`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/about`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/contact`, changeFrequency: "yearly", priority: 0.3 },
   ];
+
+  // The /blog index itself is a thin page with nothing to show until at
+  // least one post is published — matches its own noindex-when-empty logic.
+  if (posts.length > 0) {
+    staticRoutes.push({ url: `${SITE_URL}/blog`, changeFrequency: "daily", priority: 0.8 });
+  }
 
   const toolRoutes: MetadataRoute.Sitemap = tools.map((t) => ({
     url: `${SITE_URL}/tools/${t.slug}`,
@@ -49,6 +73,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: c.updatedAt,
     changeFrequency: "daily",
     priority: 0.7,
+  }));
+
+  const companyRoutes: MetadataRoute.Sitemap = companies.map((c) => ({
+    url: `${SITE_URL}/company/${c.slug}`,
+    lastModified: c.updatedAt,
+    changeFrequency: "weekly",
+    priority: 0.6,
   }));
 
   const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
@@ -65,5 +96,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...toolRoutes, ...categoryRoutes, ...blogRoutes, ...collectionRoutes];
+  return [
+    ...staticRoutes,
+    ...toolRoutes,
+    ...categoryRoutes,
+    ...companyRoutes,
+    ...blogRoutes,
+    ...collectionRoutes,
+  ];
 }

@@ -9,11 +9,17 @@ import { Pagination } from "@/components/shared/pagination";
 export const revalidate = 1800;
 const PAGE_SIZE = 12;
 
-export const metadata: Metadata = buildMetadata({
-  path: "/blog",
-  title: "Blog",
-  description: "Guides, comparisons, and insights on the best digital tools.",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const publishedCount = await prisma.blogPost.count({ where: { status: "PUBLISHED" } });
+  return buildMetadata({
+    path: "/blog",
+    title: "Blog",
+    description: "Guides, comparisons, and insights on the best digital tools.",
+    // Noindex while there are no published posts yet — flips back to
+    // indexable automatically the moment the first post goes live.
+    noindex: publishedCount === 0,
+  });
+}
 
 export default async function BlogPage({
   searchParams,

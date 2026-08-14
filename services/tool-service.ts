@@ -14,6 +14,7 @@ const TOOL_PUBLIC_INCLUDE = {
   screenshots: { orderBy: { order: "asc" as const } },
   pricingPlans: { orderBy: { order: "asc" as const } },
   platforms: { include: { platform: true } },
+  integrations: { include: { integration: true } },
   faqs: { orderBy: { order: "asc" as const } },
   seo: true,
   alternativesFrom: {

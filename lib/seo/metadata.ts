@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 const SITE_NAME = "ToolVerse";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolverse.example.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolverse-ecru.vercel.app";
 
 export interface SeoInput {
   title?: string | null;
@@ -27,7 +27,11 @@ export function buildMetadata(input: SeoInput): Metadata {
     alternates: { canonical: url },
     robots: {
       index: !input.noindex,
-      follow: !input.noindex,
+      // Deliberately always true, even when noindex — thin/empty pages
+      // (a category with 0 tools yet, an empty blog) still link to real
+      // content elsewhere on the site; there's no case in this app where
+      // we want to block crawlers from following those links too.
+      follow: true,
     },
     openGraph: {
       title,

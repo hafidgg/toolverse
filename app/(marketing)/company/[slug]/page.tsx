@@ -40,6 +40,9 @@ export async function generateMetadata({
   return buildMetadata({
     path: `/company/${slug}`,
     title: company.seo?.metaTitle ?? company.name,
+    // A company with zero published tools is a thin page — noindex until
+    // it has at least one, then this flips back automatically.
+    noindex: company.tools.length === 0,
     description: company.seo?.metaDescription ?? company.description,
     image: company.logoUrl,
   });

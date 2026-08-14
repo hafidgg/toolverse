@@ -40,7 +40,7 @@ export default async function AdminSettingsPage() {
             </div>
             <div>
               <Label htmlFor="siteUrl">Site URL</Label>
-              <Input id="siteUrl" name="siteUrl" defaultValue={settings?.siteUrl ?? ""} placeholder="https://toolverse.example.com" />
+              <Input id="siteUrl" name="siteUrl" defaultValue={settings?.siteUrl ?? ""} placeholder="https://your-domain.com" />
             </div>
             <div>
               <Label htmlFor="contactEmail">Contact Email</Label>

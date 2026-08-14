@@ -30,7 +30,7 @@ describe("buildMetadata", () => {
 
   it("sets noindex robots when requested", () => {
     const metadata = buildMetadata({ path: "/search", noindex: true });
-    expect(metadata.robots).toEqual({ index: false, follow: false });
+    expect(metadata.robots).toEqual({ index: false, follow: true });
   });
 });
 

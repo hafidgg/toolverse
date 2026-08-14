@@ -27,10 +27,20 @@ export async function generateMetadata({
   const { slug } = await params;
   const category = await getCategory(slug);
   if (!category) return buildMetadata({ path: `/categories/${slug}`, noindex: true });
+
+  // A category with zero published tools is a thin page — indexable once it
+  // has content, noindexed (but still reachable, per robots "follow") until
+  // then. Recomputed on every request via `page` count below, so this
+  // flips back to indexable automatically the moment a tool is published.
+  const toolCount = await prisma.tool.count({
+    where: { status: "PUBLISHED", categoryId: category.id },
+  });
+
   return buildMetadata({
     path: `/categories/${slug}`,
     title: category.seo?.metaTitle ?? `Best ${category.name} Tools`,
     description: category.seo?.metaDescription ?? category.description,
+    noindex: toolCount === 0,
   });
 }
 

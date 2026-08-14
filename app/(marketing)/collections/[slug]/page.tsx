@@ -39,6 +39,9 @@ export async function generateMetadata({
     title: collection.seo?.metaTitle ?? collection.title,
     description: collection.seo?.metaDescription ?? collection.description,
     image: collection.coverImage,
+    // A collection with zero tools is a thin page — noindex until it has
+    // at least one, then this flips back automatically.
+    noindex: collection.tools.length === 0,
   });
 }
 
