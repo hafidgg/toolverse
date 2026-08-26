@@ -267,15 +267,23 @@ model Tool {
 
   viewCount         Int          @default(0)
   clickCount        Int          @default(0)
-  upvoteCount        Int          @default(0)
+  upvoteCount       Int          @default(0)
 
   // Content provenance (internal — not exposed on any public page; used by
   // the content seeding/audit pipeline to track what's actually been
   // verified vs. what still needs review before being trusted editorially).
   sourceUrl           String?
   sourceType          String?              // e.g. "official_website", "press_release"
-  lastVerifiedAt       DateTime?
+  lastVerifiedAt      DateTime?
   verificationStatus  VerificationStatus   @default(UNVERIFIED)
+
+  // Phase 2 — Tool Intelligence attributes
+  // NULL = UNKNOWN
+  hasFreePlan          Boolean?
+  hasApi               Boolean?
+  commercialUseAllowed Boolean?
+  hasBatchProcessing   Boolean?
+  beginnerFriendly     Boolean?
 
   // Relations — taxonomy
   categoryId        String
