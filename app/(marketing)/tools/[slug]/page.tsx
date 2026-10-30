@@ -22,6 +22,20 @@ const PRICING_LABELS: Record<string, string> = {
   CONTACT_SALES: "Contact Sales",
 };
 
+// The tool-level starting price carries no billing cycle of its own, so only
+// show "/mo" when a pricing plan at that exact price is explicitly monthly.
+function startingPriceIsMonthly(
+  startingPrice: number,
+  plans: { price: unknown; billingCycle: string | null }[]
+) {
+  return plans.some(
+    (plan) =>
+      plan.price != null &&
+      Number(plan.price) === startingPrice &&
+      plan.billingCycle?.trim().toLowerCase() === "monthly"
+  );
+}
+
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -120,7 +134,7 @@ export default async function ToolPage({
             <span className="text-muted-foreground">
               {" "}
               — from {tool.currency ?? "USD"} {Number(tool.startingPrice).toFixed(0)}
-              {tool.pricingModel === "SUBSCRIPTION" || tool.pricingModel === "FREEMIUM" ? "/mo" : ""}
+              {startingPriceIsMonthly(Number(tool.startingPrice), tool.pricingPlans) ? "/mo" : ""}
             </span>
           )}
         </span>
@@ -137,7 +151,7 @@ export default async function ToolPage({
         <a
           href={tool.websiteUrl}
           target="_blank"
-          rel="noopener noreferrer nofollow sponsored"
+          rel="noopener noreferrer nofollow"
           className="text-muted-foreground hover:text-foreground"
         >
           {new URL(tool.websiteUrl).hostname.replace(/^www\./, "")} ↗
@@ -275,7 +289,7 @@ export default async function ToolPage({
         <a
           href={tool.websiteUrl}
           target="_blank"
-          rel="noopener noreferrer nofollow sponsored"
+          rel="noopener noreferrer nofollow"
           className="inline-flex rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground"
         >
           Visit {tool.name} →

@@ -9,7 +9,7 @@ import { prisma } from "@/lib/db/client";
 export const revalidate = 1800;
 
 async function getHomeData() {
-  const [featured, trending, latest, categories] = await Promise.all([
+  const [featured, trending, latest, categories, publishedCount] = await Promise.all([
     prisma.tool.findMany({
       where: { status: "PUBLISHED", isFeatured: true },
       include: { category: true },
@@ -34,19 +34,20 @@ async function getHomeData() {
       take: 10,
       include: { _count: { select: { tools: true } } },
     }),
+    prisma.tool.count({ where: { status: "PUBLISHED" } }),
   ]);
-  return { featured, trending, latest, categories };
+  return { featured, trending, latest, categories, publishedCount };
 }
 
 export default async function HomePage() {
-  const { featured, trending, latest, categories } = await getHomeData();
+  const { featured, trending, latest, categories, publishedCount } = await getHomeData();
 
   return (
     <main>
       <section className="border-b bg-gradient-to-b from-accent/40 to-background">
         <div className="container flex flex-col items-center py-20 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5" /> Curated & verified digital tools
+            <Sparkles className="h-3.5 w-3.5" /> Curated directory of digital tools
           </span>
           <h1 className="mt-6 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
             Find the right tool, faster.
@@ -58,7 +59,7 @@ export default async function HomePage() {
           <form action="/search" className="mt-8 flex w-full max-w-lg gap-2">
             <input
               name="q"
-              placeholder="Search 1,000+ tools…"
+              placeholder={publishedCount > 0 ? `Search ${publishedCount} tools…` : "Search tools…"}
               className="h-12 flex-1 rounded-lg border bg-background px-4 text-sm shadow-sm"
             />
             <Button type="submit" size="lg" className="h-12">

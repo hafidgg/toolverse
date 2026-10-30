@@ -101,6 +101,7 @@ export function softwareApplicationSchema(tool: {
   currency?: string | null;
   category: string;
 }) {
+  const offers = buildOffer(tool);
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -109,13 +110,26 @@ export function softwareApplicationSchema(tool: {
     url: `${SITE_URL}/tools/${tool.slug}`,
     applicationCategory: tool.category,
     image: tool.logoUrl ?? undefined,
-    offers: {
-      "@type": "Offer",
-      price: tool.startingPrice ?? 0,
-      priceCurrency: tool.currency ?? "USD",
-      category: tool.pricingModel,
-    },
+    ...(offers ? { offers } : {}),
   };
+}
+
+// Only emit an Offer we can actually stand behind: price 0 strictly for
+// FREE / OPEN_SOURCE, a known positive starting price otherwise, and no
+// Offer at all when pricing is unknown (never a guessed or default price).
+function buildOffer(tool: {
+  pricingModel: string;
+  startingPrice?: number | null;
+  currency?: string | null;
+}) {
+  const priceCurrency = tool.currency || "USD";
+  if (tool.pricingModel === "FREE" || tool.pricingModel === "OPEN_SOURCE") {
+    return { "@type": "Offer", price: 0, priceCurrency, category: tool.pricingModel };
+  }
+  if (typeof tool.startingPrice === "number" && Number.isFinite(tool.startingPrice) && tool.startingPrice > 0) {
+    return { "@type": "Offer", price: tool.startingPrice, priceCurrency, category: tool.pricingModel };
+  }
+  return undefined;
 }
 
 export function faqSchema(items: { question: string; answer: string }[]) {
