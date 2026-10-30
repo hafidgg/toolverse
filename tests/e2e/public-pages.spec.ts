@@ -106,6 +106,21 @@ test.describe("Milestone 1: safe, honest, measurable", () => {
   }
 });
 
+test.describe("Unknown dynamic routes return a real 404", () => {
+  for (const path of [
+    "/categories/does-not-exist-xyz",
+    "/company/does-not-exist-xyz",
+    "/collections/does-not-exist-xyz",
+    "/blog/does-not-exist-xyz",
+    "/does-not-exist-xyz",
+  ]) {
+    test(`${path} -> 404`, async ({ request }) => {
+      const res = await request.get(path);
+      expect(res.status()).toBe(404);
+    });
+  }
+});
+
 test.describe("Admin auth", () => {
   test("unauthenticated admin access redirects to login", async ({ page }) => {
     await page.goto("/admin");
