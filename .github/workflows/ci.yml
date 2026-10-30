@@ -59,6 +59,25 @@ jobs:
   e2e:
     needs: lint-typecheck-test
     runs-on: ubuntu-latest
+    # Throwaway CI-only database; seeded with the repo's content fixtures so
+    # E2E tests have real published tool slugs. Never points at production.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: toolverse_e2e
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/toolverse_e2e
+      ADMIN_SESSION_SECRET: ci-test-secret-please-override-in-real-envs-0000000000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -66,5 +85,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - run: npm run seed:content
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
