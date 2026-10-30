@@ -12,85 +12,50 @@ Each environment needs **two** URLs from the same Neon branch:
 
 Migrations must not run through the PgBouncer pooler, which is why `directUrl` exists.
 
-## Current state (Milestone 1)
+## Current state
 
-- Production schema has so far been synced with `prisma db push` from the Vercel
-  build (`vercel.json → buildCommand`). There was **no migration history**
-  (`prisma/migrations/` held only `.gitkeep`).
-- **Interim fix (done):** `--accept-data-loss` was removed from the build command.
-  It is now `prisma generate && prisma db push && next build`, so a schema change
-  that would drop data **fails the build** instead of silently dropping columns or tables.
-- **Baseline migration added:** `prisma/migrations/0_init/migration.sql`, generated
-  offline (no database connection) with:
+- **Railway is retired.** Production and Preview use Neon (see above).
+- **Migrations are the only schema-change path.** The Vercel build command is:
 
-  ```bash
-  npx prisma migrate diff \
-    --from-empty \
-    --to-schema-datamodel prisma/schema.prisma \
-    --script > prisma/migrations/0_init/migration.sql
+  ```
+  prisma generate && prisma migrate deploy && next build
   ```
 
-  Review: 788 lines, CREATE TYPE / CREATE TABLE / CREATE INDEX / ADD FOREIGN KEY only.
-  It contains no DROP, TRUNCATE or DELETE statements; the only "DELETE" text is in FK
-  `ON DELETE CASCADE` clauses. It includes the Phase 2 nullable columns on `"tools"`.
+  `prisma db push` is no longer used anywhere in deployment.
+- `prisma/migrations/0_init` is the baseline. It was generated offline with
+  `prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script`;
+  it only creates objects (no DROP, TRUNCATE or DELETE). On the new, empty Neon
+  database it is applied normally by `migrate deploy`, so no `migrate resolve`
+  baselining is needed.
 
-- CI (`.github/workflows/ci.yml`) already runs `prisma migrate deploy` against its
-  throwaway Postgres service; with `0_init` present, that now creates the real schema.
+## Initializing an empty Neon branch (one-time)
 
-## Important: the baseline is NOT proven to match production
+Run from a machine that can reach Neon on port 5432, with `.env` pointing at the target branch:
 
-`0_init` describes what the Prisma schema *says*. Production was built
-incrementally with `db push`, possibly from older schema versions, plus any
-manual SQL (e.g. `prisma/PHASE2_SCHEMA_CHANGE.sql`). Index names, defaults,
-column types or leftover columns may differ. **Do not mark it applied until the
-comparison below shows no differences.**
+```bash
+# 1. read-only: must list no tables in schema public
+# 2. apply the baseline and confirm
+npx prisma migrate deploy
+npx prisma migrate status        # "Database schema is up to date!"
+# 3. seed
+npm run seed                     # admin user + base data
+npm run seed:content             # categories, companies, tools, collections from data/
+```
 
-## Follow-up for the owner (manual, in order)
+Change the seeded admin password immediately after the first login.
 
-1. **Check for an existing migration table** in production (read-only):
-   ```sql
-   SELECT to_regclass('public._prisma_migrations');
-   ```
-   If it exists and has rows, stop: a history already exists, so reconcile it instead
-   of baselining.
-2. **Diff production against the baseline (read-only).** From a trusted machine,
-   with `DATABASE_URL` pointing at production:
-   ```bash
-   npx prisma migrate diff \
-     --from-url "$DATABASE_URL" \
-     --to-schema-datamodel prisma/schema.prisma \
-     --script
-   ```
-   This only reads the schema through introspection. The expected output is an empty
-   migration (`-- This is an empty migration.`). If it prints any SQL, resolve those
-   differences first, either with a new reviewed migration or by fixing the schema.
-   Ideally, test this on a Neon **branch** of production first.
-3. **Mark the baseline as applied** (writes one row to `_prisma_migrations`; it
-   does not execute the SQL):
-   ```bash
-   npx prisma migrate resolve --applied 0_init
-   ```
-   Only do this after step 2 is clean and step 1 confirmed there was no history.
-4. **Switch the build command** in `vercel.json` to:
-   ```
-   prisma generate && prisma migrate deploy && next build
-   ```
-   Do this in the same deploy, or after step 3. Never before: `migrate deploy` would
-   try to run `0_init` against existing tables and fail.
-5. From then on, make schema changes with `npm run prisma:migrate` (`migrate dev`)
-   against a **local or branch** database, commit the generated migration, and let
-   `migrate deploy` apply it. Never run `db push` against production again.
+## Making schema changes from now on
 
-## Why the build still uses `db push` for now
-
-Switching to `migrate deploy` before production is baselined would make every
-deploy fail, or attempt to recreate existing tables. Keeping `db push` without
-`--accept-data-loss` is the safest interim option: additive changes still apply,
-and destructive ones stop the build.
+1. Edit `prisma/schema.prisma`.
+2. `npm run prisma:migrate -- --name <change>` (`migrate dev`) against a **local
+   database or a disposable Neon branch**, never `production`.
+3. Review the generated `migration.sql` for destructive statements and commit it.
+4. Deploying runs `prisma migrate deploy` (Preview against the Neon `preview` branch,
+   Production against `production`).
 
 ## Never
 
-- `prisma db push --accept-data-loss` against production.
-- `prisma migrate reset` / `migrate dev` against production.
+- `prisma db push` (with or without `--accept-data-loss`) against Neon `production`.
+- `prisma migrate reset` / `migrate dev` against `production`.
 - Running `step4_tool_intelligence.sql` or `PHASE2_SCHEMA_CHANGE.sql` without review.
   Both are review-only documents.
