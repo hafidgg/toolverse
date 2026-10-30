@@ -6,6 +6,8 @@ export default defineConfig({
     environment: "node",
     include: ["tests/unit/**/*.test.ts"],
   },
+  // Match Next.js's automatic JSX runtime so server components can be unit tested.
+  esbuild: { jsx: "automatic" },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "."),

@@ -57,8 +57,4 @@
   .text-balance {
     text-wrap: balance;
   }
-  .ad-slot {
-    @apply flex items-center justify-center overflow-hidden rounded-lg border border-dashed border-border bg-muted/40 text-xs text-muted-foreground;
-    min-height: 100px;
-  }
 }

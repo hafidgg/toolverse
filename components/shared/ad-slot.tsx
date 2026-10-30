@@ -16,7 +16,8 @@ const FORMAT_HEIGHT: Record<NonNullable<AdSlotProps["format"]>, string> = {
 
 // Renders a real AdSense unit only when both the client ID (Settings) and the
 // placement's slot ID (NEXT_PUBLIC_ADSENSE_SLOT_*) are configured and valid.
-// Otherwise renders nothing — visitors never see placeholder "ad" boxes.
+// Otherwise renders nothing — visitors never see placeholder "ad" boxes, and
+// callers pass spacing via className so no empty margin or wrapper remains.
 // The adsbygoogle.js script itself is loaded once, globally, by AnalyticsScripts.
 export async function AdSlot({ placement, className, format = "horizontal" }: AdSlotProps) {
   const slotId = adSlotIdFor(placement);

@@ -69,9 +69,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="container py-8">
-        <AdSlot placement="banner" format="horizontal" />
-      </section>
+      <AdSlot placement="banner" format="horizontal" className="container my-8" />
 
       {categories.length > 0 && (
         <section className="container py-10">

@@ -57,7 +57,7 @@ async function ToolsResults({ searchParams }: PageProps) {
 
   return (
     <>
-      <div className="mb-6 flex flex-wrap gap-2">
+      <div className="mb-6 mt-8 flex flex-wrap gap-2">
         <Link
           href="/tools"
           className="rounded-full border px-3 py-1.5 text-sm data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
@@ -110,9 +110,7 @@ export default function ToolsPage(props: PageProps) {
         Browse the full directory of curated digital tools and online resources.
       </p>
 
-      <div className="my-8">
-        <AdSlot placement="banner" format="horizontal" />
-      </div>
+      <AdSlot placement="banner" format="horizontal" className="my-8" />
 
       <Suspense fallback={<ToolGridSkeleton />}>
         <ToolsResults {...props} />

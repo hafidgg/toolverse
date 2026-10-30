@@ -88,6 +88,8 @@ test.describe("Milestone 1: safe, honest, measurable", () => {
     const html = await res.text();
     expect(html).not.toContain("1,000+");
     expect(html).not.toMatch(/Ad Slot|Ad — Leaderboard|Ad — Top Banner|Ad — Sidebar/);
+    // Ads aren't configured in test environments: no labelled ad container may remain.
+    expect(html).not.toContain('aria-label="Advertisement"');
   });
 
   test("tool page has no ad placeholder and links out via /go/", async ({ request }) => {
