@@ -24,6 +24,7 @@ jobs:
           --health-retries 5
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/toolverse_test
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/toolverse_test
       ADMIN_SESSION_SECRET: ci-test-secret-please-override-in-real-envs-0000000000
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
 
@@ -76,6 +77,7 @@ jobs:
           --health-retries 5
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/toolverse_e2e
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/toolverse_e2e
       ADMIN_SESSION_SECRET: ci-test-secret-please-override-in-real-envs-0000000000
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
     steps:

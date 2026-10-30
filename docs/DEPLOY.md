@@ -1,5 +1,17 @@
 # Deployment & database migration strategy
 
+## Database: Neon (Frankfurt, `aws-eu-central-1`)
+
+The database is Neon project `toolverse`. Railway is no longer used.
+Each environment needs **two** URLs from the same Neon branch:
+
+| Variable | Neon URL | Used by |
+|---|---|---|
+| `DATABASE_URL` | pooled (host contains `-pooler`) | the app at runtime (Prisma Client) |
+| `DIRECT_URL` | direct (no `-pooler`) | Prisma CLI: `migrate deploy`, `migrate status`, `migrate diff` (`directUrl` in `schema.prisma`) |
+
+Migrations must not run through the PgBouncer pooler, which is why `directUrl` exists.
+
 ## Current state (Milestone 1)
 
 - Production schema has so far been synced with `prisma db push` from the Vercel
