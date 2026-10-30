@@ -118,7 +118,7 @@ export default function ToolsPage(props: PageProps) {
       </p>
 
       <div className="my-8">
-        <AdSlot label="Ad — Top Banner" format="horizontal" />
+        <AdSlot placement="banner" format="horizontal" />
       </div>
 
       <Suspense fallback={<ToolGridSkeleton />}>

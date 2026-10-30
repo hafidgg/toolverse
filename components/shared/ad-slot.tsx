@@ -1,5 +1,9 @@
+import { getAdSettings } from "@/lib/ads/settings";
+import { adSlotIdFor, validAdsenseClientId, type AdPlacement } from "@/lib/ads/config";
+import { AdUnit } from "./ad-unit";
+
 interface AdSlotProps {
-  label?: string;
+  placement: AdPlacement;
   className?: string;
   format?: "horizontal" | "square" | "vertical";
 }
@@ -10,17 +14,23 @@ const FORMAT_HEIGHT: Record<NonNullable<AdSlotProps["format"]>, string> = {
   vertical: "min-h-[600px]",
 };
 
-// Reserved, layout-stable ad container. Swap the inner comment for the
-// AdSense <ins> tag + script once approved — the reserved space prevents CLS.
-export function AdSlot({ label = "Advertisement", className, format = "horizontal" }: AdSlotProps) {
+// Renders a real AdSense unit only when both the client ID (Settings) and the
+// placement's slot ID (NEXT_PUBLIC_ADSENSE_SLOT_*) are configured and valid.
+// Otherwise renders nothing — visitors never see placeholder "ad" boxes.
+// The adsbygoogle.js script itself is loaded once, globally, by AnalyticsScripts.
+export async function AdSlot({ placement, className, format = "horizontal" }: AdSlotProps) {
+  const slotId = adSlotIdFor(placement);
+  if (!slotId) return null;
+  const { adsenseClientId } = await getAdSettings();
+  const clientId = validAdsenseClientId(adsenseClientId);
+  if (!clientId) return null;
+
   return (
-    <div
-      className={`ad-slot ${FORMAT_HEIGHT[format]} ${className ?? ""}`}
-      role="complementary"
-      aria-label={label}
-      data-ad-slot={format}
-    >
-      {label}
-    </div>
+    <aside aria-label="Advertisement" className={`${FORMAT_HEIGHT[format]} ${className ?? ""}`}>
+      <p className="mb-1 text-center text-[10px] uppercase tracking-wide text-muted-foreground">
+        Advertisement
+      </p>
+      <AdUnit clientId={clientId} slotId={slotId} />
+    </aside>
   );
 }

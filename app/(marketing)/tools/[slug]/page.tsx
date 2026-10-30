@@ -11,6 +11,7 @@ import {
   type JsonLdSchema,
 } from "@/lib/seo/metadata";
 import { getToolBySlug, getAllPublishedToolSlugs } from "@/services/tool-service";
+import { AdSlot } from "@/components/shared/ad-slot";
 
 const PRICING_LABELS: Record<string, string> = {
   FREE: "Free",
@@ -283,7 +284,7 @@ export default async function ToolPage({
         </section>
       )}
 
-      <div className="ad-slot mt-12">Ad Slot — In-Content</div>
+      <AdSlot placement="in-content" className="mt-12" />
 
       <div className="mt-10">
         <a

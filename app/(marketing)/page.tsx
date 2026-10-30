@@ -70,7 +70,7 @@ export default async function HomePage() {
       </section>
 
       <section className="container py-8">
-        <AdSlot label="Ad — Leaderboard" format="horizontal" />
+        <AdSlot placement="banner" format="horizontal" />
       </section>
 
       {categories.length > 0 && (

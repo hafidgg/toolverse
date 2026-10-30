@@ -162,7 +162,7 @@ export default async function BlogPostPage({
               </ul>
             </div>
           )}
-          <AdSlot label="Ad — Sidebar" format="square" />
+          <AdSlot placement="sidebar" format="square" />
         </aside>
       </article>
     </main>
