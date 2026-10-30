@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db/client";
-import { buildMetadata, breadcrumbSchema, faqSchema, type JsonLdSchema } from "@/lib/seo/metadata";
+import { buildMetadata, breadcrumbSchema, faqSchema, toSafeJsonLd, type JsonLdSchema } from "@/lib/seo/metadata";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { AdSlot } from "@/components/shared/ad-slot";
 
@@ -85,7 +85,7 @@ export default async function BlogPostPage({
   return (
     <main className="container py-10">
       {jsonLd.map((schema, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: toSafeJsonLd(schema) }} />
       ))}
 
       <Breadcrumbs
@@ -162,7 +162,7 @@ export default async function BlogPostPage({
               </ul>
             </div>
           )}
-          <AdSlot label="Ad — Sidebar" format="square" />
+          <AdSlot placement="sidebar" format="square" />
         </aside>
       </article>
     </main>

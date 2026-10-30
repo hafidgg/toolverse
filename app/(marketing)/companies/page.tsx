@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db/client";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { EmptyState } from "@/components/shared/empty-state";
+import { formatToolCount } from "@/lib/utils/format";
 
 export const revalidate = 3600;
 
@@ -46,7 +47,7 @@ export default async function CompaniesPage() {
               )}
               <div>
                 <h2 className="font-semibold">{company.name}</h2>
-                <p className="text-xs text-muted-foreground">{company._count.tools} tools</p>
+                <p className="text-xs text-muted-foreground">{formatToolCount(company._count.tools)}</p>
               </div>
             </Link>
           ))}

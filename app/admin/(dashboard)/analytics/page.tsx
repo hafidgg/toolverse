@@ -3,6 +3,7 @@ import { StatCard } from "@/components/admin/stat-card";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Eye, MousePointerClick, Search, TrendingUp } from "lucide-react";
 import { AnalyticsChart } from "./analytics-chart";
+import { pluralize } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export default async function AdminAnalyticsPage() {
   const since = new Date();
   since.setDate(since.getDate() - 30);
 
-  const [pageViews, outboundClicks, searches, topTools, dailyEvents] = await Promise.all([
+  const [pageViews, outboundClicks, searches, topTools, dailyEvents, clicksByTool] = await Promise.all([
     prisma.analyticsEvent.count({ where: { eventType: "page_view", createdAt: { gte: since } } }),
     prisma.analyticsEvent.count({ where: { eventType: "outbound_click", createdAt: { gte: since } } }),
     prisma.analyticsEvent.count({ where: { eventType: "search", createdAt: { gte: since } } }),
@@ -24,7 +25,20 @@ export default async function AdminAnalyticsPage() {
       where: { createdAt: { gte: since } },
       select: { eventType: true, createdAt: true },
     }),
+    prisma.analyticsEvent.groupBy({
+      by: ["entityId"],
+      where: { eventType: "outbound_click", entityType: "tool", createdAt: { gte: since } },
+      _count: { _all: true },
+      orderBy: { _count: { entityId: "desc" } },
+      take: 20,
+    }),
   ]);
+
+  const clickedTools = await prisma.tool.findMany({
+    where: { id: { in: clicksByTool.map((c) => c.entityId).filter((id): id is string => !!id) } },
+    select: { id: true, name: true },
+  });
+  const toolNames = new Map(clickedTools.map((t) => [t.id, t.name]));
 
   const byDay = new Map<string, number>();
   for (const event of dailyEvents) {
@@ -69,13 +83,35 @@ export default async function AdminAnalyticsPage() {
                   {tool.name}
                 </span>
                 <span className="flex gap-4 text-muted-foreground">
-                  <span>{tool.viewCount} views</span>
-                  <span>{tool.clickCount} clicks</span>
+                  <span>{pluralize(tool.viewCount, "view")}</span>
+                  <span>{pluralize(tool.clickCount, "click")}</span>
                 </span>
               </li>
             ))}
             {topTools.length === 0 && (
               <li className="py-2.5 text-sm text-muted-foreground">No data yet.</li>
+            )}
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="text-base">Outbound Clicks per Tool (30 days)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="divide-y">
+            {clicksByTool.map((row, i) => (
+              <li key={row.entityId ?? i} className="flex items-center justify-between py-2.5 text-sm">
+                <span className="flex items-center gap-3">
+                  <span className="text-muted-foreground">{i + 1}.</span>
+                  {(row.entityId && toolNames.get(row.entityId)) ?? "Deleted tool"}
+                </span>
+                <span className="text-muted-foreground">{pluralize(row._count._all, "click")}</span>
+              </li>
+            ))}
+            {clicksByTool.length === 0 && (
+              <li className="py-2.5 text-sm text-muted-foreground">No outbound clicks recorded yet.</li>
             )}
           </ul>
         </CardContent>

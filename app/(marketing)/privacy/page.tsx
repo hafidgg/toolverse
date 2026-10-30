@@ -68,10 +68,20 @@ export default function PrivacyPage() {
           <p>
             Every tool listing links out to that tool&apos;s own official website. Once you
             click through, you are on a site we do not control, governed by that site&apos;s
-            own privacy practices, which we encourage you to review independently. Outbound
-            links carry a <code>rel=&quot;sponsored nofollow&quot;</code> attribute for
-            search engines, a technical SEO signal rather than an indication that every link
-            is a paid placement.
+            own privacy practices, which we encourage you to review independently.
+          </p>
+          <p>
+            &quot;Visit&quot; links on tool pages first pass through a short ToolVerse
+            redirect (<code>/go/&lt;tool&gt;</code>) that records an anonymous click event
+            (which tool, the ToolVerse page you came from, and a timestamp) and then sends
+            you straight to the tool&apos;s official website. We do not record your IP
+            address, and we do not append tracking parameters to the destination URL.
+          </p>
+          <p>
+            ToolVerse does not currently use affiliate links, and no tool pays to be listed.
+            Outbound links carry a <code>rel=&quot;nofollow&quot;</code> attribute so search
+            engines don&apos;t treat them as editorial endorsements. If we ever add affiliate
+            links, we will label them clearly on the page and update this policy first.
           </p>
         </section>
 

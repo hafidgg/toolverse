@@ -4,19 +4,29 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Scale } from "lucide-react";
 
-export const metadata: Metadata = buildMetadata({
-  path: "/compare",
-  title: "Compare Tools",
-  description: "Compare digital tools side by side on features, pricing, and platforms.",
-});
-
 interface PageProps {
   searchParams: Promise<{ tools?: string }>;
 }
 
+function parseSlugs(toolsParam: string | undefined) {
+  return (toolsParam ?? "").split(",").map((s) => s.trim()).filter(Boolean).slice(0, 4);
+}
+
+// The bare /compare page (no tools selected) is an empty shell — keep it out
+// of the index. Populated comparisons stay indexable.
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const { tools: toolsParam } = await searchParams;
+  return buildMetadata({
+    path: "/compare",
+    title: "Compare Tools",
+    description: "Compare digital tools side by side on features, pricing, and platforms.",
+    noindex: parseSlugs(toolsParam).length === 0,
+  });
+}
+
 export default async function ComparePage({ searchParams }: PageProps) {
   const { tools: toolsParam } = await searchParams;
-  const slugs = (toolsParam ?? "").split(",").map((s) => s.trim()).filter(Boolean).slice(0, 4);
+  const slugs = parseSlugs(toolsParam);
 
   const tools =
     slugs.length > 0

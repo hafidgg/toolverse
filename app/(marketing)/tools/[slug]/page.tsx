@@ -11,6 +11,7 @@ import {
   type JsonLdSchema,
 } from "@/lib/seo/metadata";
 import { getToolBySlug, getAllPublishedToolSlugs } from "@/services/tool-service";
+import { AdSlot } from "@/components/shared/ad-slot";
 
 const PRICING_LABELS: Record<string, string> = {
   FREE: "Free",
@@ -21,6 +22,28 @@ const PRICING_LABELS: Record<string, string> = {
   OPEN_SOURCE: "Open Source",
   CONTACT_SALES: "Contact Sales",
 };
+
+// The tool-level starting price carries no billing cycle of its own, so only
+// show "/mo" when a pricing plan at that exact price is explicitly monthly.
+function startingPriceIsMonthly(
+  startingPrice: number,
+  plans: { price: unknown; billingCycle: string | null }[]
+) {
+  return plans.some(
+    (plan) =>
+      plan.price != null &&
+      Number(plan.price) === startingPrice &&
+      plan.billingCycle?.trim().toLowerCase() === "monthly"
+  );
+}
+
+function displayHost(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "Website";
+  }
+}
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -120,7 +143,7 @@ export default async function ToolPage({
             <span className="text-muted-foreground">
               {" "}
               — from {tool.currency ?? "USD"} {Number(tool.startingPrice).toFixed(0)}
-              {tool.pricingModel === "SUBSCRIPTION" || tool.pricingModel === "FREEMIUM" ? "/mo" : ""}
+              {startingPriceIsMonthly(Number(tool.startingPrice), tool.pricingPlans) ? "/mo" : ""}
             </span>
           )}
         </span>
@@ -135,12 +158,12 @@ export default async function ToolPage({
         )}
 
         <a
-          href={tool.websiteUrl}
+          href={`/go/${tool.slug}`}
           target="_blank"
-          rel="noopener noreferrer nofollow sponsored"
+          rel="nofollow noopener"
           className="text-muted-foreground hover:text-foreground"
         >
-          {new URL(tool.websiteUrl).hostname.replace(/^www\./, "")} ↗
+          {displayHost(tool.websiteUrl)} ↗
         </a>
       </div>
 
@@ -269,13 +292,13 @@ export default async function ToolPage({
         </section>
       )}
 
-      <div className="ad-slot mt-12">Ad Slot — In-Content</div>
+      <AdSlot placement="in-content" className="mt-12" />
 
       <div className="mt-10">
         <a
-          href={tool.websiteUrl}
+          href={`/go/${tool.slug}`}
           target="_blank"
-          rel="noopener noreferrer nofollow sponsored"
+          rel="nofollow noopener"
           className="inline-flex rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground"
         >
           Visit {tool.name} →

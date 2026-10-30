@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { breadcrumbSchema, faqSchema, buildMetadata, toSafeJsonLd } from "@/lib/seo/metadata";
+import {
+  breadcrumbSchema,
+  faqSchema,
+  buildMetadata,
+  toSafeJsonLd,
+  softwareApplicationSchema,
+} from "@/lib/seo/metadata";
 
 describe("breadcrumbSchema", () => {
   it("builds a valid BreadcrumbList JSON-LD structure", () => {
@@ -52,5 +58,38 @@ describe("toSafeJsonLd", () => {
     const schema = { "@type": "Organization", name: "ToolVerse" };
     const serialized = toSafeJsonLd(schema);
     expect(JSON.parse(serialized)).toEqual(schema);
+  });
+});
+
+describe("softwareApplicationSchema offers", () => {
+  const base = { name: "X", description: "d", slug: "x", category: "AI" };
+
+  it("omits offers when pricing is unknown", () => {
+    for (const pricingModel of ["PAID", "SUBSCRIPTION", "FREEMIUM", "CONTACT_SALES", "ONE_TIME"]) {
+      const schema = softwareApplicationSchema({ ...base, pricingModel, startingPrice: null });
+      expect(schema).not.toHaveProperty("offers");
+    }
+  });
+
+  it("never emits price 0 for non-free models, even with a 0 starting price", () => {
+    const schema = softwareApplicationSchema({ ...base, pricingModel: "PAID", startingPrice: 0 });
+    expect(schema).not.toHaveProperty("offers");
+  });
+
+  it("emits price 0 only for FREE and OPEN_SOURCE", () => {
+    for (const pricingModel of ["FREE", "OPEN_SOURCE"]) {
+      const schema = softwareApplicationSchema({ ...base, pricingModel });
+      expect(schema.offers).toMatchObject({ "@type": "Offer", price: 0, priceCurrency: "USD" });
+    }
+  });
+
+  it("uses a known starting price and currency", () => {
+    const schema = softwareApplicationSchema({
+      ...base,
+      pricingModel: "FREEMIUM",
+      startingPrice: 8,
+      currency: "EUR",
+    });
+    expect(schema.offers).toMatchObject({ price: 8, priceCurrency: "EUR" });
   });
 });

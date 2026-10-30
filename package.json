@@ -73,7 +73,7 @@
     "@playwright/test": "1.62.1"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": "22.x"
   },
   "overrides": {
     "sharp": "0.35.3"
