@@ -37,3 +37,6 @@ next-env.d.ts
 
 # prisma
 /prisma/migrations/dev
+
+# accidental shell output (e.g. PowerShell cmdlet name run in bash)
+/Test-NetConnection
