@@ -21,9 +21,13 @@ before launch.
 
 - [ ] Rotate the Neon database password (Neon console → Roles → Reset password),
       then update `DATABASE_URL` (and `DIRECT_URL` if used) in Vercel and locally.
-      Also check which database the local `.env` points to — at audit time it was a
-      remote host, not a local database.
-- [ ] Rotate `ADMIN_SESSION_SECRET` (`openssl rand -base64 48`) in Vercel. All
+      Railway is retired (unreachable since the Neon migration): delete the old
+      Railway project and its `DATABASE_URL` from Vercel. Its password must be treated
+      as leaked, because it was shared by Production and Preview.
+      Neon is now the only database: give `production` and `preview` separate Neon
+      branches, each with its own `DATABASE_URL` (pooled) and `DIRECT_URL` (direct).
+- [ ] Rotate `ADMIN_SESSION_SECRET` (`openssl rand -base64 48`) in Vercel, with separate values
+      for Production and Preview. All
       admin sessions are invalidated, which is expected.
 - [ ] Confirm the default admin password `ChangeMe123!` has been changed in
       production (log in with it; it must fail). Change it via Admin → Settings.
