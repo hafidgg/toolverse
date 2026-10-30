@@ -3,7 +3,7 @@
   "framework": "nextjs",
   "buildCommand": "prisma generate && prisma migrate deploy && next build",
   "installCommand": "npm install",
-  "regions": ["iad1"],
+  "regions": ["fra1"],
   "crons": [],
   "headers": [
     {
