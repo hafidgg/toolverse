@@ -1,48 +1,48 @@
 ﻿-- =====================================================================
 -- STEP 4 — SAFE DATABASE POPULATION (review-only script, NOT executed)
 -- Tool Intelligence Data Pass — Phase 2 fields
--- Target table: "Tool"
+-- Target table: "tools" (Prisma model Tool, @@map("tools"))
 -- =====================================================================
 
 SELECT
   id, slug, "hasFreePlan", "hasApi", "commercialUseAllowed",
   "hasBatchProcessing", "beginnerFriendly"
-FROM "Tool"
+FROM "tools"
 WHERE slug IN ('chatgpt','claude','notion','figma','github-copilot','canva')
 ORDER BY slug;
 
 SELECT COUNT(*) AS matching_row_count
-FROM "Tool"
+FROM "tools"
 WHERE slug IN ('chatgpt','claude','notion','figma','github-copilot','canva');
 
 BEGIN;
 
-UPDATE "Tool" SET
+UPDATE "tools" SET
   "hasFreePlan" = true, "hasApi" = true, "commercialUseAllowed" = true,
   "hasBatchProcessing" = true, "beginnerFriendly" = NULL
 WHERE slug = 'chatgpt';
 
-UPDATE "Tool" SET
+UPDATE "tools" SET
   "hasFreePlan" = true, "hasApi" = true, "commercialUseAllowed" = true,
   "hasBatchProcessing" = true, "beginnerFriendly" = NULL
 WHERE slug = 'claude';
 
-UPDATE "Tool" SET
+UPDATE "tools" SET
   "hasFreePlan" = true, "hasApi" = true, "commercialUseAllowed" = NULL,
   "hasBatchProcessing" = NULL, "beginnerFriendly" = NULL
 WHERE slug = 'notion';
 
-UPDATE "Tool" SET
+UPDATE "tools" SET
   "hasFreePlan" = true, "hasApi" = true, "commercialUseAllowed" = true,
   "hasBatchProcessing" = NULL, "beginnerFriendly" = NULL
 WHERE slug = 'figma';
 
-UPDATE "Tool" SET
+UPDATE "tools" SET
   "hasFreePlan" = true, "hasApi" = NULL, "commercialUseAllowed" = true,
   "hasBatchProcessing" = NULL, "beginnerFriendly" = NULL
 WHERE slug = 'github-copilot';
 
-UPDATE "Tool" SET
+UPDATE "tools" SET
   "hasFreePlan" = true, "hasApi" = true, "commercialUseAllowed" = true,
   "hasBatchProcessing" = true, "beginnerFriendly" = true
 WHERE slug = 'canva';
@@ -53,7 +53,7 @@ DECLARE
   matched_count   integer;
 BEGIN
   SELECT COUNT(*) INTO mismatch_count
-  FROM "Tool" t
+  FROM "tools" t
   JOIN (VALUES
     ('chatgpt'::text,        true,  true,  true,  true,  NULL::boolean),
     ('claude',               true,  true,  true,  true,  NULL),
@@ -72,7 +72,7 @@ BEGIN
   );
 
   SELECT COUNT(*) INTO matched_count
-  FROM "Tool"
+  FROM "tools"
   WHERE slug IN ('chatgpt','claude','notion','figma','github-copilot','canva');
 
   IF mismatch_count <> 0 THEN
@@ -91,6 +91,6 @@ COMMIT;
 SELECT
   id, slug, "hasFreePlan", "hasApi", "commercialUseAllowed",
   "hasBatchProcessing", "beginnerFriendly"
-FROM "Tool"
+FROM "tools"
 WHERE slug IN ('chatgpt','claude','notion','figma','github-copilot','canva')
 ORDER BY slug;
