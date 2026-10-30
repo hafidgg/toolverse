@@ -1,14 +1,8 @@
 import Link from "next/link";
-import { Search, Menu } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const NAV_LINKS = [
-  { href: "/tools", label: "Tools" },
-  { href: "/categories", label: "Categories" },
-  { href: "/collections", label: "Collections" },
-  { href: "/companies", label: "Companies" },
-  { href: "/blog", label: "Blog" },
-];
+import { MobileNav } from "./mobile-nav";
+import { NAV_LINKS } from "./nav-links";
 
 export function SiteHeader() {
   return (
@@ -37,9 +31,7 @@ export function SiteHeader() {
               <Search className="h-4 w-4" />
             </Button>
           </Link>
-          <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menu">
-            <Menu className="h-4 w-4" />
-          </Button>
+          <MobileNav />
         </div>
       </div>
     </header>
