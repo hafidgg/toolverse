@@ -39,6 +39,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Workaround for npm/cli#4828: package-lock.json was generated on Windows
+      # and omits the Linux optional binaries, so Vitest fails with "Cannot find
+      # module @rollup/rollup-linux-x64-gnu". Install it at the exact rollup
+      # version pinned in the lockfile, without touching the lockfile.
+      # Follow-up: regenerate package-lock.json with all platform binaries and
+      # drop this step.
+      - name: Install Linux Rollup binary (npm/cli#4828 workaround)
+        run: npm install --no-save @rollup/rollup-linux-x64-gnu@4.62.4
+
       - name: Prisma generate
         run: npx prisma generate
 
@@ -87,6 +96,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      # npm/cli#4828 workaround; see the lint-typecheck-test job above.
+      - run: npm install --no-save @rollup/rollup-linux-x64-gnu@4.62.4
       - run: npx prisma generate
       - run: npx prisma migrate deploy
       - run: npm run seed:content

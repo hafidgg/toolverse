@@ -59,3 +59,17 @@ Change the seeded admin password immediately after the first login.
 - `prisma migrate reset` / `migrate dev` against `production`.
 - Running `step4_tool_intelligence.sql` or `PHASE2_SCHEMA_CHANGE.sql` without review.
   Both are review-only documents.
+
+## Known issue: lockfile missing optional platform binaries
+
+`package-lock.json` was generated on Windows and is missing the optional platform
+binaries for other OSes (npm/cli#4828), e.g. `@rollup/rollup-linux-x64-gnu` and the
+`@esbuild/*` packages.
+
+- npm 11 rejects it: `npm ci` fails with `EUSAGE` ("Missing: @esbuild/... from lock file").
+  Locally, install with `npx npm@10 ci` instead.
+- CI (Node 22 / npm 10) gets past `npm ci`, then installs the Linux Rollup binary with
+  `npm install --no-save` at the version pinned in the lockfile (see `.github/workflows/ci.yml`).
+
+Follow-up: regenerate the lockfile so it includes every platform's binaries, in its own
+PR with a review of resolved-version changes, then remove both workarounds.
