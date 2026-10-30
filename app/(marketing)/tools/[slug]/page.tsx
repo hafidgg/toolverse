@@ -37,6 +37,14 @@ function startingPriceIsMonthly(
   );
 }
 
+function displayHost(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "Website";
+  }
+}
+
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -150,12 +158,12 @@ export default async function ToolPage({
         )}
 
         <a
-          href={tool.websiteUrl}
+          href={`/go/${tool.slug}`}
           target="_blank"
-          rel="noopener noreferrer nofollow"
+          rel="nofollow noopener"
           className="text-muted-foreground hover:text-foreground"
         >
-          {new URL(tool.websiteUrl).hostname.replace(/^www\./, "")} ↗
+          {displayHost(tool.websiteUrl)} ↗
         </a>
       </div>
 
@@ -288,9 +296,9 @@ export default async function ToolPage({
 
       <div className="mt-10">
         <a
-          href={tool.websiteUrl}
+          href={`/go/${tool.slug}`}
           target="_blank"
-          rel="noopener noreferrer nofollow"
+          rel="nofollow noopener"
           className="inline-flex rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground"
         >
           Visit {tool.name} →
