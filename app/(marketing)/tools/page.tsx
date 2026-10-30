@@ -8,7 +8,8 @@ import { ToolGridSkeleton } from "@/components/shared/tool-card-skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { AdSlot } from "@/components/shared/ad-slot";
-import type { Prisma, PricingModel } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
+import { parseToolsQuery } from "@/lib/validators/tools-query";
 
 export const metadata: Metadata = buildMetadata({
   path: "/tools",
@@ -19,25 +20,17 @@ export const metadata: Metadata = buildMetadata({
 const PAGE_SIZE = 24;
 
 interface PageProps {
-  searchParams: Promise<{
-    category?: string;
-    tag?: string;
-    platform?: string;
-    pricing?: string;
-    sort?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 async function ToolsResults({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const page = Math.max(1, parseInt(params.page ?? "1", 10) || 1);
+  const { page, ...params } = parseToolsQuery(await searchParams);
 
   const where: Prisma.ToolWhereInput = { status: "PUBLISHED" };
   if (params.category) where.category = { slug: params.category };
   if (params.tag) where.tags = { some: { tag: { slug: params.tag } } };
   if (params.platform) where.platforms = { some: { platform: { slug: params.platform } } };
-  if (params.pricing) where.pricingModel = params.pricing as PricingModel;
+  if (params.pricing) where.pricingModel = params.pricing;
 
   const orderBy: Prisma.ToolOrderByWithRelationInput =
     params.sort === "newest"
