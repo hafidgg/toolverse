@@ -6,6 +6,7 @@ import { ToolCard } from "@/components/shared/tool-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { formatToolCount } from "@/lib/utils/format";
 
 export const revalidate = 1800;
 const PAGE_SIZE = 24;
@@ -97,7 +98,7 @@ export default async function CategoryPage({
           <EmptyState title="No tools in this category yet" />
         ) : (
           <>
-            <p className="mb-4 text-sm text-muted-foreground">{total} tools</p>
+            <p className="mb-4 text-sm text-muted-foreground">{formatToolCount(total)}</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {tools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />

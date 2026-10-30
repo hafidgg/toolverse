@@ -108,6 +108,38 @@ test.describe("Milestone 1: safe, honest, measurable", () => {
   }
 });
 
+test.describe("Homepage honesty and polish", () => {
+  test("browse-by-category hides empty categories and pluralizes counts", async ({ page }) => {
+    await page.goto("/");
+    const section = page.locator("section", {
+      has: page.getByRole("heading", { name: "Browse by category" }),
+    });
+    const counts = await section.locator("a p.text-xs").allTextContents();
+    expect(counts.length).toBeGreaterThan(0);
+    for (const text of counts) {
+      expect(text).toMatch(/^(1 tool|([2-9]|\d{2,}) tools)$/);
+    }
+  });
+
+  test("no tool appears in both Featured and Trending", async ({ page }) => {
+    await page.goto("/");
+    const hrefs = async (heading: RegExp) =>
+      page
+        .locator("section", { has: page.getByRole("heading", { name: heading }) })
+        .locator('a[href^="/tools/"]')
+        .evaluateAll((els) => els.map((e) => e.getAttribute("href")));
+    const featured = new Set(await hrefs(/Featured Tools/));
+    const trending = await hrefs(/Trending/);
+    expect(trending.filter((h) => featured.has(h))).toEqual([]);
+  });
+
+  test("hero makes no comparison/alternatives promise and no '1 tools'", async ({ request }) => {
+    const html = await (await request.get("/")).text();
+    expect(html).not.toContain("compare features, pricing, and alternatives");
+    expect(html).not.toMatch(/\b1 tools\b/);
+  });
+});
+
 test.describe("Unknown dynamic routes return a real 404", () => {
   for (const path of [
     "/categories/does-not-exist-xyz",

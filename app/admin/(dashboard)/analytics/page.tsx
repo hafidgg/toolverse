@@ -3,6 +3,7 @@ import { StatCard } from "@/components/admin/stat-card";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Eye, MousePointerClick, Search, TrendingUp } from "lucide-react";
 import { AnalyticsChart } from "./analytics-chart";
+import { pluralize } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -82,8 +83,8 @@ export default async function AdminAnalyticsPage() {
                   {tool.name}
                 </span>
                 <span className="flex gap-4 text-muted-foreground">
-                  <span>{tool.viewCount} views</span>
-                  <span>{tool.clickCount} clicks</span>
+                  <span>{pluralize(tool.viewCount, "view")}</span>
+                  <span>{pluralize(tool.clickCount, "click")}</span>
                 </span>
               </li>
             ))}
@@ -106,7 +107,7 @@ export default async function AdminAnalyticsPage() {
                   <span className="text-muted-foreground">{i + 1}.</span>
                   {(row.entityId && toolNames.get(row.entityId)) ?? "Deleted tool"}
                 </span>
-                <span className="text-muted-foreground">{row._count._all} clicks</span>
+                <span className="text-muted-foreground">{pluralize(row._count._all, "click")}</span>
               </li>
             ))}
             {clicksByTool.length === 0 && (

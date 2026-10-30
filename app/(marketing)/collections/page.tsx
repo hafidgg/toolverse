@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db/client";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { EmptyState } from "@/components/shared/empty-state";
+import { formatToolCount } from "@/lib/utils/format";
 
 export const revalidate = 3600;
 
@@ -47,7 +48,7 @@ export default async function CollectionsPage() {
                 {c.description && (
                   <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{c.description}</p>
                 )}
-                <p className="mt-3 text-xs font-medium text-primary">{c._count.tools} tools</p>
+                <p className="mt-3 text-xs font-medium text-primary">{formatToolCount(c._count.tools)}</p>
               </div>
             </Link>
           ))}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DataTable, type Column } from "@/components/admin/data-table";
 import { ToolRowActions } from "./tool-row-actions";
+import { formatToolCount } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,7 @@ export default async function AdminToolsPage({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Tools</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{tools.length} tools</p>
+          <p className="mt-1 text-sm text-muted-foreground">{formatToolCount(tools.length)}</p>
         </div>
         <Button asChild>
           <Link href="/admin/tools/new">

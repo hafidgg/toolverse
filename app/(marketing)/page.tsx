@@ -5,6 +5,8 @@ import { ToolCard } from "@/components/shared/tool-card";
 import { AdSlot } from "@/components/shared/ad-slot";
 import { EmptyState } from "@/components/shared/empty-state";
 import { prisma } from "@/lib/db/client";
+import { formatToolCount } from "@/lib/utils/format";
+import { excludeTools } from "@/lib/utils/collections";
 
 export const revalidate = 1800;
 
@@ -20,7 +22,7 @@ async function getHomeData() {
       where: { status: "PUBLISHED" },
       include: { category: true },
       orderBy: { clickCount: "desc" },
-      take: 8,
+      take: 16,
     }),
     prisma.tool.findMany({
       where: { status: "PUBLISHED" },
@@ -28,15 +30,23 @@ async function getHomeData() {
       orderBy: { publishedAt: "desc" },
       take: 8,
     }),
+    // Only categories with published tools; empty ones stay reachable at
+    // /categories (and noindexed) but aren't promoted on the homepage.
     prisma.category.findMany({
-      where: { isActive: true },
+      where: { isActive: true, tools: { some: { status: "PUBLISHED" } } },
       orderBy: { order: "asc" },
       take: 10,
-      include: { _count: { select: { tools: true } } },
+      include: { _count: { select: { tools: { where: { status: "PUBLISHED" } } } } },
     }),
     prisma.tool.count({ where: { status: "PUBLISHED" } }),
   ]);
-  return { featured, trending, latest, categories, publishedCount };
+  return {
+    featured,
+    trending: excludeTools(trending, featured).slice(0, 8),
+    latest,
+    categories,
+    publishedCount,
+  };
 }
 
 export default async function HomePage() {
@@ -53,13 +63,14 @@ export default async function HomePage() {
             Find the right tool, faster.
           </h1>
           <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-            ToolVerse is a curated directory of the best digital tools — compare features,
-            pricing, and alternatives in one place.
+            ToolVerse is a curated directory of digital tools. Browse by category, see what
+            each tool does, its pricing model and platforms, and go straight to its official
+            site.
           </p>
           <form action="/search" className="mt-8 flex w-full max-w-lg gap-2">
             <input
               name="q"
-              placeholder={publishedCount > 0 ? `Search ${publishedCount} tools…` : "Search tools…"}
+              placeholder={publishedCount > 0 ? `Search ${formatToolCount(publishedCount)}…` : "Search tools…"}
               className="h-12 flex-1 rounded-lg border bg-background px-4 text-sm shadow-sm"
             />
             <Button type="submit" size="lg" className="h-12">
@@ -82,7 +93,7 @@ export default async function HomePage() {
                 className="rounded-lg border p-4 text-center transition-colors hover:border-primary hover:bg-accent/50"
               >
                 <p className="font-medium">{cat.name}</p>
-                <p className="text-xs text-muted-foreground">{cat._count.tools} tools</p>
+                <p className="text-xs text-muted-foreground">{formatToolCount(cat._count.tools)}</p>
               </Link>
             ))}
           </div>

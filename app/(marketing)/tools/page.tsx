@@ -10,6 +10,7 @@ import { Pagination } from "@/components/shared/pagination";
 import { AdSlot } from "@/components/shared/ad-slot";
 import type { Prisma } from "@prisma/client";
 import { parseToolsQuery } from "@/lib/validators/tools-query";
+import { formatToolCount } from "@/lib/utils/format";
 
 export const metadata: Metadata = buildMetadata({
   path: "/tools",
@@ -84,7 +85,7 @@ async function ToolsResults({ searchParams }: PageProps) {
         />
       ) : (
         <>
-          <p className="mb-4 text-sm text-muted-foreground">{total} tools found</p>
+          <p className="mb-4 text-sm text-muted-foreground">{formatToolCount(total)} found</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {tools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
