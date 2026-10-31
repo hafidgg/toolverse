@@ -4,6 +4,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db/client";
 import { getSession } from "@/lib/auth/session";
+import { findRedirectConflict, validateFromPath, validateToPath } from "@/lib/redirects";
 
 async function requireAdmin() {
   const session = await getSession();
@@ -201,8 +202,17 @@ export type RedirectInput = z.infer<typeof redirectSchema>;
 
 export async function createRedirect(input: RedirectInput) {
   await requireAdmin();
-  const data = redirectSchema.parse(input);
-  await prisma.redirect.create({ data });
+  const parsed = redirectSchema.parse(input);
+  const from = validateFromPath(parsed.fromPath);
+  if (!from.ok) throw new Error(from.reason);
+  const to = validateToPath(parsed.toPath);
+  if (!to.ok) throw new Error(to.reason);
+
+  const existing = await prisma.redirect.findMany({ select: { fromPath: true, toPath: true } });
+  const conflict = findRedirectConflict({ fromPath: from.value, toPath: to.value }, existing);
+  if (conflict) throw new Error(conflict);
+
+  await prisma.redirect.create({ data: { fromPath: from.value, toPath: to.value, type: parsed.type } });
   revalidatePath("/admin/redirects");
   return { success: true };
 }

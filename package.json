@@ -18,7 +18,8 @@
     "content-audit": "tsx scripts/content-audit.ts",
     "prisma:studio": "prisma studio",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "audit-redirects": "tsx scripts/audit-redirects.ts"
   },
   "dependencies": {
     "next": "15.5.22",
