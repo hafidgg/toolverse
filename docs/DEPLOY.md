@@ -50,8 +50,10 @@ Change the seeded admin password immediately after the first login.
 2. `npm run prisma:migrate -- --name <change>` (`migrate dev`) against a **local
    database or a disposable Neon branch**, never `production`.
 3. Review the generated `migration.sql` for destructive statements and commit it.
-4. Deploying runs `prisma migrate deploy` (Preview against the Neon `preview` branch,
-   Production against `production`).
+4. Deploying runs `prisma migrate deploy` against the database in that environment's
+   `DIRECT_URL`. Preview must point at the Neon `preview` branch and Production at
+   `production`. Until that split is done, Preview and Production share one database,
+   and no PR may contain a migration. See [PREVIEW_DB.md](PREVIEW_DB.md).
 
 ## Never
 
