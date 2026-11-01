@@ -72,6 +72,43 @@ test.describe("Milestone 1: safe, honest, measurable", () => {
     expect(res.headers()["location"]).toMatch(/^https:\/\//);
   });
 
+  test("tool page sends one page_view beacon per session", async ({ page }) => {
+    // Playwright doesn't expose sendBeacon bodies (postData() is null), so
+    // count requests here; payload shape is covered by track-route.test.ts.
+    // A 200 (not 404) proves the beacon carried a real, published tool id.
+    const beacons: string[] = [];
+    page.on("request", (r) => {
+      if (r.url().endsWith("/api/public/track") && r.method() === "POST") beacons.push(r.url());
+    });
+
+    const tracked = page.waitForResponse(
+      (r) => r.url().endsWith("/api/public/track") && r.request().method() === "POST"
+    );
+    await page.goto(`/tools/${SEEDED_TOOL_SLUG}`);
+    expect((await tracked).status()).toBe(200);
+
+    // Same session: reloading must not send a second view.
+    // (The page never reaches "networkidle", so give the effect time to fire.)
+    await page.reload({ waitUntil: "load" });
+    await page.waitForTimeout(1500);
+    expect(beacons).toHaveLength(1);
+  });
+
+  test("/api/public/track rejects unknown tools and cross-origin posts", async ({ request }) => {
+    const ua = { "user-agent": "Mozilla/5.0 (X11; Linux x86_64) Chrome/130 Safari/537.36" };
+    const unknown = await request.post("/api/public/track", {
+      headers: ua,
+      data: { eventType: "page_view", entityType: "tool", entityId: "does-not-exist" },
+    });
+    expect(unknown.status()).toBe(404);
+
+    const crossOrigin = await request.post("/api/public/track", {
+      headers: { ...ua, origin: "https://evil.example" },
+      data: { eventType: "page_view" },
+    });
+    expect(crossOrigin.status()).toBe(403);
+  });
+
   test("/go/unknown returns 404", async ({ request }) => {
     const res = await request.get("/go/unknown-xyz", { maxRedirects: 0 });
     expect(res.status()).toBe(404);

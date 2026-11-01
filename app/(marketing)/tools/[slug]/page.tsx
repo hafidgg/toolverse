@@ -12,6 +12,7 @@ import {
 } from "@/lib/seo/metadata";
 import { getToolBySlug, getAllPublishedToolSlugs } from "@/services/tool-service";
 import { AdSlot } from "@/components/shared/ad-slot";
+import { TrackView } from "@/components/shared/track-view";
 
 const PRICING_LABELS: Record<string, string> = {
   FREE: "Free",
@@ -106,6 +107,7 @@ export default async function ToolPage({
 
   return (
     <main className="container py-10">
+      <TrackView entityType="tool" entityId={tool.id} />
       {jsonLd.map((schema, i) => (
         <script
           key={i}

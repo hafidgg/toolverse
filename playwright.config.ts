@@ -1,4 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
+import { assertLocalDatabase } from "./tests/e2e/db-guard";
+
+// Runs at config load, before the webServer build starts.
+assertLocalDatabase();
 
 export default defineConfig({
   testDir: "./tests/e2e",
