@@ -73,3 +73,16 @@ binaries for other OSes (npm/cli#4828), e.g. `@rollup/rollup-linux-x64-gnu` and 
 
 Follow-up: regenerate the lockfile so it includes every platform's binaries, in its own
 PR with a review of resolved-version changes, then remove both workarounds.
+
+## Running E2E locally
+
+E2E tests write data (page views, outbound clicks, click counts), so they must
+never run against production. `playwright.config.ts` refuses to start unless
+`DATABASE_URL` (and `DIRECT_URL`, if set) point at `localhost`/`127.0.0.1`.
+Set them in the command environment, never in `.env`:
+
+```sh
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/toolverse_e2e_local
+export DIRECT_URL=$DATABASE_URL
+npx prisma migrate deploy && npm run seed:content && npm run test:e2e
+```
